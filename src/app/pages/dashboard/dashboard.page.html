@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>לוח בקרה</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  @if (isLoading()) {
+    <div class="loading-container">
+      <ion-spinner name="crescent"></ion-spinner>
+      <p class="loading-text">טוען משימות...</p>
+    </div>
+  } @else {
+    <div class="dashboard-content">
+      <app-draft-banner
+        [drafts]="drafts()"
+        (deleteDraft)="onDeleteDraft($event)"
+      />
+
+      <app-summary-bar
+        [missions]="nonDrafts()"
+        [totalTrucks]="totalTrucks()"
+        [totalPeople]="totalPeople()"
+      />
+
+      <div class="mission-list-section">
+        <app-mission-list
+          [missions]="nonDrafts()"
+          [expandedMissionId]="expandedMissionId()"
+          (toggleExpand)="toggleExpand($event)"
+          (startMission)="onStart($event)"
+          (completeMission)="onComplete($event)"
+          (cancelMission)="onCancel($event)"
+        />
+      </div>
+    </div>
+  }
+
+  @if (showConfetti()) {
+    <app-confetti />
+  }
+
+  @if (completionMission(); as mission) {
+    <app-completion-modal
+      [mission]="mission"
+      (closeModal)="closeCompletionModal()"
+    />
+  }
+</ion-content>

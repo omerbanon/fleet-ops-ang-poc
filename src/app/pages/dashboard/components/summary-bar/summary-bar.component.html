@@ -1,0 +1,47 @@
+<div class="summary-bar">
+  <!-- Active missions -->
+  <ion-card class="metric-card">
+    <ion-card-content>
+      <div class="metric-label">משימות פעילות</div>
+      <div class="metric-value-row">
+        <span class="metric-value">{{ activeMissions().length }}</span>
+        @if (activeMissions().length > 0) {
+          <span class="ping-dot">
+            <span class="ping-ring"></span>
+            <span class="ping-core"></span>
+          </span>
+        }
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Scheduled this week -->
+  <ion-card class="metric-card">
+    <ion-card-content>
+      <div class="metric-label">מתוזמנות השבוע</div>
+      <div class="metric-value">{{ scheduledMissions().length }}</div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Trucks deployed -->
+  <ion-card class="metric-card">
+    <ion-card-content>
+      <div class="metric-label">משאיות בשטח</div>
+      <div class="metric-value">{{ trucksDeployed() }} / {{ totalTrucks() }}</div>
+      <div class="progress-track">
+        <div class="progress-fill progress-green" [style.width.%]="truckPct()"></div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Crew deployed -->
+  <ion-card class="metric-card">
+    <ion-card-content>
+      <div class="metric-label">כוח אדם בשטח</div>
+      <div class="metric-value">{{ crewDeployed() }} / {{ totalPeople() }}</div>
+      <div class="progress-track">
+        <div class="progress-fill progress-blue" [style.width.%]="crewPct()"></div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</div>

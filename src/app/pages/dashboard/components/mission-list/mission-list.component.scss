@@ -1,0 +1,52 @@
+@use 'styles/variables' as *;
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 96px 0;
+  text-align: center;
+  color: $gray-300;
+
+  svg {
+    margin-bottom: $space-4;
+  }
+}
+
+.empty-title {
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: $gray-400;
+  margin: 0 0 $space-1;
+}
+
+.empty-subtitle {
+  font-size: 0.875rem;
+  color: $gray-400;
+  margin: 0;
+}
+
+.mission-groups {
+  display: flex;
+  flex-direction: column;
+  gap: $space-6;
+}
+
+.date-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.date-header {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: $gray-500;
+  margin: 0 0 $space-3;
+}
+
+.group-missions {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+}

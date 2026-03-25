@@ -1,0 +1,13 @@
+<div class="confetti-container">
+  @for (p of particles(); track p.id) {
+    <div
+      class="confetti-particle"
+      [style.left.%]="p.left"
+      [style.background-color]="p.color"
+      [style.animation-delay.s]="p.delay"
+      [style.animation-duration.s]="p.duration"
+      [style.width.px]="p.size"
+      [style.height.px]="p.size"
+    ></div>
+  }
+</div>

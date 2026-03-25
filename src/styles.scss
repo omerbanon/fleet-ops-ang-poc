@@ -1,0 +1,83 @@
+@use './styles/variables' as *;
+@use './styles/animations';
+
+/* Ionic core CSS */
+@import '@ionic/angular/css/core.css';
+@import '@ionic/angular/css/normalize.css';
+@import '@ionic/angular/css/structure.css';
+@import '@ionic/angular/css/typography.css';
+@import '@ionic/angular/css/display.css';
+@import '@ionic/angular/css/padding.css';
+@import '@ionic/angular/css/float-elements.css';
+@import '@ionic/angular/css/text-alignment.css';
+@import '@ionic/angular/css/text-transformation.css';
+@import '@ionic/angular/css/flex-utils.css';
+
+/* Ionic theme overrides */
+:root {
+  --ion-color-primary: #{$primary};
+  --ion-color-primary-rgb: 45, 95, 63;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-shade: #{$primary-dark};
+  --ion-color-primary-tint: #{$primary-light};
+
+  --ion-color-success: #{$success};
+  --ion-color-warning: #{$warning};
+  --ion-color-danger: #{$danger};
+
+  --ion-font-family: #{$font-family};
+  --ion-background-color: #ffffff;
+  --ion-text-color: #{$gray-900};
+}
+
+/* Global RTL */
+html {
+  direction: rtl;
+}
+
+body {
+  font-family: $font-family;
+  background: #ffffff;
+  color: $gray-900;
+  margin: 0;
+}
+
+/* Ionic card reset for RTL */
+ion-card {
+  direction: rtl;
+}
+
+ion-toolbar {
+  --background: #{$primary};
+  --color: #ffffff;
+
+  ion-title {
+    font-weight: 600;
+  }
+}
+
+/* Badge utility classes */
+.status-draft {
+  background: $status-draft-bg;
+  color: $status-draft-text;
+}
+
+.status-active {
+  background: $status-active-bg;
+  color: $status-active-text;
+}
+
+.status-scheduled {
+  background: $status-scheduled-bg;
+  color: $status-scheduled-text;
+}
+
+.status-completed {
+  background: $status-completed-bg;
+  color: $status-completed-text;
+}
+
+.status-cancelled {
+  background: $status-cancelled-bg;
+  color: $status-cancelled-text;
+}

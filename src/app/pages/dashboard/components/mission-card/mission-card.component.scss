@@ -1,0 +1,410 @@
+@use 'styles/variables' as *;
+
+.mission-card {
+  background: white;
+  border-radius: $card-radius;
+  border: 1px solid $card-border;
+  box-shadow: $card-shadow;
+  overflow: hidden;
+  transition: box-shadow 0.2s;
+
+  &:hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08);
+  }
+}
+
+.card-header {
+  padding: $space-5;
+  cursor: pointer;
+}
+
+.header-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: $space-3;
+}
+
+// Status badges
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.status-draft {
+  background: $status-draft-bg;
+  color: $status-draft-text;
+}
+
+.status-active {
+  background: $status-active-bg;
+  color: $status-active-text;
+}
+
+.status-scheduled {
+  background: $status-scheduled-bg;
+  color: $status-scheduled-text;
+}
+
+.status-completed {
+  background: $status-completed-bg;
+  color: $status-completed-text;
+}
+
+.status-cancelled {
+  background: $status-cancelled-bg;
+  color: $status-cancelled-text;
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: $status-active-dot;
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.mission-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: $gray-900;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
+}
+
+.quick-stats {
+  display: flex;
+  align-items: center;
+  gap: $space-4;
+  font-size: 0.875rem;
+  color: $gray-500;
+}
+
+.stat-item {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-1;
+}
+
+.stage-preview {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  margin-top: 10px;
+  font-size: 0.875rem;
+  color: $gray-600;
+}
+
+.stage-place {
+  font-weight: 500;
+}
+
+.arrow-icon {
+  flex-shrink: 0;
+  transform: rotate(180deg);
+}
+
+.stage-time {
+  color: $gray-400;
+  margin-inline-start: auto;
+}
+
+// Progress dots
+.progress-dots {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.dot-group {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.dot-completed {
+  background: $stage-completed;
+}
+
+.dot-departed {
+  background: $stage-departed;
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.dot-pending {
+  background: $gray-300;
+}
+
+.dot-fraction {
+  font-size: 9px;
+  line-height: 1;
+  color: $gray-500;
+  font-weight: 500;
+}
+
+// Expandable section
+.expandable {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s ease;
+
+  &.open {
+    grid-template-rows: 1fr;
+  }
+}
+
+.expandable-inner {
+  overflow: hidden;
+}
+
+.expanded-content {
+  padding: 0 $space-5 $space-5;
+  border-top: 1px solid $gray-100;
+  padding-top: $space-4;
+}
+
+// Sections
+.section {
+  margin-bottom: $space-5;
+}
+
+.section-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: $gray-700;
+  margin: 0 0 $space-3;
+}
+
+// Stages
+.stages-list {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+}
+
+.stage-card {
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 0.875rem;
+}
+
+.stage-default {
+  background: $gray-50;
+}
+
+.stage-departed {
+  background: rgba($stage-departed, 0.05);
+  border-inline-start: 3px solid $stage-departed;
+}
+
+.stage-completed {
+  background: rgba($stage-completed, 0.04);
+  border-inline-start: 3px solid $stage-completed;
+}
+
+.stage-header {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  margin-bottom: 6px;
+}
+
+.stage-letter {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: $gray-400;
+  width: 20px;
+  text-align: center;
+}
+
+.stage-action {
+  font-weight: 600;
+  color: $gray-800;
+}
+
+.stage-route {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  color: $gray-600;
+  margin-inline-start: 28px;
+  margin-bottom: $space-1;
+}
+
+.stage-time-row {
+  color: $gray-500;
+  margin-inline-start: 28px;
+  margin-bottom: $space-1;
+}
+
+.stage-detail {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: $gray-500;
+  margin-inline-start: 28px;
+  margin-bottom: $space-1;
+}
+
+.contact-phone {
+  color: $gray-400;
+}
+
+// Truck stage status
+.stage-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-4 $space-4;
+  margin-bottom: $space-3;
+  font-size: 0.75rem;
+  color: $gray-500;
+}
+
+.stage-summary-item {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-1;
+}
+
+.stage-summary-label {
+  font-weight: 500;
+  color: $gray-600;
+}
+
+.completed-count {
+  color: $stage-completed;
+  font-weight: 500;
+}
+
+.truck-status-list {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.truck-status-row {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  font-size: 0.875rem;
+}
+
+.truck-label {
+  color: $gray-700;
+  font-weight: 500;
+}
+
+.truck-sep {
+  color: $gray-400;
+}
+
+.truck-stage {
+  color: $gray-500;
+}
+
+.stage-status-pending {
+  color: $stage-pending;
+}
+
+.stage-status-departed {
+  color: $stage-departed;
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.stage-status-completed {
+  color: $stage-completed;
+}
+
+// Crew
+.crew-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.crew-card {
+  background: $gray-50;
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 0.875rem;
+}
+
+.crew-truck-header {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  margin-bottom: 6px;
+}
+
+.crew-truck-label {
+  font-weight: 600;
+  color: $gray-800;
+}
+
+.crew-truck-type {
+  color: $gray-400;
+  font-weight: 400;
+}
+
+.crew-member {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: $gray-600;
+  margin-inline-start: 24px;
+  margin-bottom: 2px;
+}
+
+.crew-role {
+  font-size: 0.75rem;
+  color: $gray-400;
+}
+
+// Actions
+.actions {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  padding-top: $space-1;
+}
+
+.action-btn {
+  --border-radius: 12px;
+  font-weight: 500;
+}
+
+.confirm-cancel {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  font-size: 0.875rem;
+}
+
+.confirm-text {
+  color: $danger;
+  font-weight: 500;
+}
+
+.confirm-btn {
+  --border-radius: 8px;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}

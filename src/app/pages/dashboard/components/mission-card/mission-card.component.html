@@ -1,0 +1,226 @@
+<div class="mission-card" [class.expanded]="isExpanded()">
+  <!-- Collapsed (always visible) -->
+  <div class="card-header" (click)="onToggle()">
+    <!-- Row 1: status badge + name -->
+    <div class="header-top">
+      <span class="status-badge" [ngClass]="getStatusClass()">
+        @if (mission().status === 'active') {
+          <span class="status-dot"></span>
+        }
+        {{ STATUS_LABELS[mission().status] }}
+      </span>
+      <h3 class="mission-name">{{ mission().mission_name }}</h3>
+    </div>
+
+    <!-- Row 2: quick stats -->
+    <div class="quick-stats">
+      <span class="stat-item">
+        <svg width="16" height="16" fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1.4">
+          <rect x="2" y="3" width="12" height="11" rx="2"/><path d="M5 1v3M11 1v3M2 7h12"/>
+        </svg>
+        {{ formatDate(mission().mission_date) }}
+      </span>
+      <span class="stat-item">
+        <svg width="16" height="16" fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1.4">
+          <circle cx="8" cy="5" r="2.5"/><path d="M3 14c0-2.8 2.2-5 5-5s5 2.2 5 5"/>
+        </svg>
+        {{ mission().commander_name }}
+      </span>
+      <span class="stat-item">
+        <svg width="16" height="16" fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1.4">
+          <path d="M1 3h9v7H1zM10 6h3l2 3v2h-5V6z"/><circle cx="4" cy="12" r="1.5"/><circle cx="12.5" cy="12" r="1.5"/>
+        </svg>
+        {{ truckCount }}
+      </span>
+      <span class="stat-item">
+        <svg width="16" height="16" fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1.4">
+          <circle cx="6" cy="5" r="2"/><circle cx="11" cy="5" r="2"/><path d="M1 14c0-2.5 2-4.5 5-4.5M10 14c0-2.5-1-4.5-4-4.5M11 9.5c2.5 0 4 2 4 4.5"/>
+        </svg>
+        {{ crewCount }}
+      </span>
+    </div>
+
+    <!-- Row 3: first stage preview -->
+    @if (firstStage; as stage) {
+      <div class="stage-preview">
+        <span class="stage-place">{{ stage.origin }}</span>
+        <svg class="arrow-icon" width="14" height="14" fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 8h10M9 4l4 4-4 4"/>
+        </svg>
+        <span class="stage-place">{{ stage.destination }}</span>
+        <span class="stage-time">{{ formatTime(stage.departure_time, stage.arrival_time) }}</span>
+      </div>
+    }
+
+    <!-- Stage progress dots — active missions -->
+    @if (mission().status === 'active' && stages.length > 0) {
+      <div class="progress-dots" dir="ltr">
+        @for (stage of stages; track stage.id) {
+          <div class="dot-group">
+            <div class="dot" [ngClass]="getStageProgressClass(stage)"></div>
+            @if (getStageProgressFraction(stage); as fraction) {
+              <span class="dot-fraction">{{ fraction }}</span>
+            }
+          </div>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- Expanded (animated via CSS grid) -->
+  <div class="expandable" [class.open]="isExpanded()">
+    <div class="expandable-inner">
+      <div class="expanded-content">
+        <!-- Stages -->
+        @if (stages.length > 0) {
+          <div class="section">
+            <h4 class="section-title">שלבי משימה</h4>
+            <div class="stages-list">
+              @for (stage of stages; track stage.id; let idx = $index) {
+                <div class="stage-card" [ngClass]="getStageStyle(stage)">
+                  <div class="stage-header">
+                    <span class="stage-letter">{{ HEB_LETTERS[idx] ?? (idx + 1 + '.') }}</span>
+                    <span class="stage-action">{{ ACTION_LABELS[stage.action] ?? stage.action }}</span>
+                  </div>
+                  <div class="stage-route">
+                    <span>{{ stage.origin }}</span>
+                    <svg class="arrow-icon" width="14" height="14" fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1.5">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M3 8h10M9 4l4 4-4 4"/>
+                    </svg>
+                    <span>{{ stage.destination }}</span>
+                  </div>
+                  <div class="stage-time-row">
+                    {{ formatTime(stage.departure_time, stage.arrival_time) }}
+                  </div>
+                  @if (stage.equipment_cargo) {
+                    <div class="stage-detail">
+                      <svg width="14" height="14" fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1.4">
+                        <path d="M2 4h12v9H2zM5 4V2h6v2"/><path d="M6 8h4"/>
+                      </svg>
+                      {{ stage.equipment_cargo }}
+                    </div>
+                  }
+                  @if (stage.contact_person_name) {
+                    <div class="stage-detail">
+                      <svg width="14" height="14" fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1.4">
+                        <path d="M3 2h3l1.5 3-2 1.5a9 9 0 004 4L11 9l3 1.5V13a2 2 0 01-2 2A12 12 0 011 4a2 2 0 012-2z"/>
+                      </svg>
+                      {{ stage.contact_person_name }}
+                      @if (stage.contact_person_phone) {
+                        <span class="contact-phone" dir="ltr">{{ stage.contact_person_phone }}</span>
+                      }
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+        }
+
+        <!-- Per-truck stage status (active + scheduled with progress) -->
+        @if ((mission().status === 'active' || mission().status === 'scheduled') && truckKeys.length > 0) {
+          <div class="section">
+            <h4 class="section-title">סטטוס רכבים</h4>
+            <div class="stage-summary">
+              @for (stage of stages; track stage.id; let idx = $index) {
+                <span class="stage-summary-item">
+                  <span class="stage-summary-label">שלב {{ HEB_LETTERS[idx] || idx + 1 }}:</span>
+                  <span [class.completed-count]="isStageFullyCompleted(idx)">{{ getStageCompletionSummary(idx) }} הושלמו</span>
+                </span>
+              }
+            </div>
+            <div class="truck-status-list">
+              @for (tk of truckKeys; track tk) {
+                <div class="truck-status-row">
+                  <svg width="16" height="16" fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1.4">
+                    <path d="M1 3h9v7H1zM10 6h3l2 3v2h-5V6z"/><circle cx="4" cy="12" r="1.5"/><circle cx="12.5" cy="12" r="1.5"/>
+                  </svg>
+                  <span class="truck-label">{{ getTruckLabel(tk) }}</span>
+                  <span class="truck-sep">&mdash;</span>
+                  <span class="truck-stage">שלב {{ getTruckCurrentStage(tk).letter }}</span>
+                  <span class="truck-stage-status" [ngClass]="'stage-status-' + getTruckCurrentStage(tk).status">
+                    {{ STAGE_STATUS_LABELS[getTruckCurrentStage(tk).status] || getTruckCurrentStage(tk).status }}
+                  </span>
+                </div>
+              }
+            </div>
+          </div>
+        }
+
+        <!-- Crew / Personnel -->
+        @if (trucks.length > 0) {
+          <div class="section">
+            <h4 class="section-title">שיבוצים</h4>
+            <div class="crew-list">
+              @for (truck of trucks; track truck.key) {
+                <div class="crew-card">
+                  <div class="crew-truck-header">
+                    <svg width="16" height="16" fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1.4">
+                      <path d="M1 3h9v7H1zM10 6h3l2 3v2h-5V6z"/><circle cx="4" cy="12" r="1.5"/><circle cx="12.5" cy="12" r="1.5"/>
+                    </svg>
+                    <span class="crew-truck-label">{{ truck.label }}</span>
+                    @if (truck.type) {
+                      <span class="crew-truck-type">({{ truck.type }})</span>
+                    }
+                  </div>
+                  @if (truck.driver) {
+                    <div class="crew-member">
+                      <span class="crew-role">נהג:</span>
+                      <span>{{ truck.driver }}</span>
+                    </div>
+                  }
+                  @if (truck.coDrivers.length > 0) {
+                    <div class="crew-member">
+                      <span class="crew-role">ליווי:</span>
+                      <span>{{ truck.coDrivers.join(', ') }}</span>
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+        }
+
+        <!-- Action buttons -->
+        <div class="actions">
+          @if (mission().status === 'scheduled') {
+            <ion-button [disabled]="actionLoading() !== null" (click)="onStart($event)" color="primary" class="action-btn">
+              @if (actionLoading() === 'start') {
+                <ion-spinner name="crescent" slot="start"></ion-spinner>
+              }
+              התחל משימה
+            </ion-button>
+          }
+          @if (mission().status === 'active') {
+            <ion-button [disabled]="actionLoading() !== null" (click)="onComplete($event)" color="success" class="action-btn">
+              @if (actionLoading() === 'complete') {
+                <ion-spinner name="crescent" slot="start"></ion-spinner>
+              }
+              סיום משימה
+            </ion-button>
+          }
+          @if (mission().status === 'scheduled' || mission().status === 'active') {
+            @if (!confirmCancel()) {
+              <ion-button [disabled]="actionLoading() !== null" (click)="onCancelClick($event)" fill="outline" color="danger" class="action-btn">
+                ביטול
+              </ion-button>
+            } @else {
+              <div class="confirm-cancel" (click)="$event.stopPropagation()">
+                <span class="confirm-text">בטוח?</span>
+                <ion-button size="small" [disabled]="actionLoading() !== null" (click)="onConfirmCancel($event)" color="danger" class="confirm-btn">
+                  @if (actionLoading() === 'cancel') {
+                    <ion-spinner name="crescent" slot="start"></ion-spinner>
+                  }
+                  כן, בטל
+                </ion-button>
+                <ion-button size="small" [disabled]="actionLoading() !== null" (click)="onDenyCancel($event)" fill="outline" color="medium" class="confirm-btn">
+                  לא
+                </ion-button>
+              </div>
+            }
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

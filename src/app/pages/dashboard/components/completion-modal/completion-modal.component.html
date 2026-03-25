@@ -1,0 +1,27 @@
+<div class="modal-backdrop" (click)="onClose()">
+  <div class="modal-content" [class.mounted]="mounted()" (click)="$event.stopPropagation()">
+    <!-- Green checkmark -->
+    <div class="check-circle">
+      <svg width="32" height="32" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+      </svg>
+    </div>
+
+    <h2 class="modal-title">המשימה הושלמה</h2>
+    <p class="modal-subtitle">{{ mission().mission_name }} &middot; {{ formatDate(mission().mission_date) }}</p>
+
+    <!-- 2x2 stat grid -->
+    <div class="stats-grid">
+      @for (stat of stats; track stat.label) {
+        <div class="stat-card">
+          <div class="stat-label">{{ stat.label }}</div>
+          <div class="stat-value">{{ stat.value }}</div>
+        </div>
+      }
+    </div>
+
+    <ion-button expand="block" fill="clear" class="close-btn" (click)="onClose()">
+      סגור
+    </ion-button>
+  </div>
+</div>

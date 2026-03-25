@@ -1,0 +1,92 @@
+@use 'styles/variables' as *;
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(4px);
+}
+
+.modal-content {
+  max-width: 384px;
+  width: calc(100% - 32px);
+  background: white;
+  border-radius: $card-radius;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  padding: $space-6;
+  text-align: center;
+  transform: scale(0.95);
+  opacity: 0;
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+
+  &.mounted {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.check-circle {
+  display: flex;
+  justify-content: center;
+  margin-bottom: $space-4;
+
+  svg {
+    width: 64px;
+    height: 64px;
+    padding: 16px;
+    border-radius: 50%;
+    background: rgba($success, 0.1);
+    color: $success;
+  }
+}
+
+.modal-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: $gray-900;
+  margin: 0 0 $space-1;
+}
+
+.modal-subtitle {
+  font-size: 0.875rem;
+  color: $gray-500;
+  margin: 0 0 $space-5;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $space-3;
+  margin-bottom: $space-5;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid $gray-100;
+  padding: $space-3;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  color: $gray-500;
+  margin-bottom: $space-1;
+}
+
+.stat-value {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: $gray-900;
+}
+
+.close-btn {
+  --background: #{$gray-100};
+  --background-hover: #{$gray-200};
+  --color: #{$gray-700};
+  --border-radius: 12px;
+  font-weight: 500;
+}

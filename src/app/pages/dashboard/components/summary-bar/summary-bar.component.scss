@@ -1,0 +1,97 @@
+@use 'styles/variables' as *;
+
+.summary-bar {
+  display: flex;
+  gap: $space-4;
+  overflow-x: auto;
+  padding-bottom: $space-2;
+}
+
+.metric-card {
+  min-width: 140px;
+  flex: 1;
+  border-radius: $card-radius;
+  border: 1px solid $card-border;
+  box-shadow: $card-shadow;
+  margin: 0;
+
+  ion-card-content {
+    padding: $space-4;
+  }
+}
+
+.metric-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: $gray-500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: $space-1;
+}
+
+.metric-value-row {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+}
+
+.metric-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: $gray-900;
+}
+
+.ping-dot {
+  position: relative;
+  display: flex;
+  height: 10px;
+  width: 10px;
+}
+
+.ping-ring {
+  animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+  position: absolute;
+  display: inline-flex;
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+  background-color: rgba($success, 0.75);
+}
+
+.ping-core {
+  position: relative;
+  display: inline-flex;
+  border-radius: 50%;
+  height: 10px;
+  width: 10px;
+  background-color: $success;
+}
+
+.progress-track {
+  margin-top: $space-2;
+  height: 6px;
+  width: 100%;
+  border-radius: 999px;
+  background-color: $gray-100;
+}
+
+.progress-fill {
+  height: 6px;
+  border-radius: 999px;
+  transition: width 0.5s ease-out;
+}
+
+.progress-green {
+  background-color: $success;
+}
+
+.progress-blue {
+  background-color: $stage-departed;
+}
+
+@keyframes ping {
+  75%, 100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
