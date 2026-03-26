@@ -1,0 +1,53 @@
+<ion-content class="ion-padding">
+  <div class="login-wrapper">
+    <div class="login-card">
+      <h1 class="title">מערכת שיגור</h1>
+      <p class="subtitle">התחבר כדי להמשיך</p>
+
+      @if (errorMessage(); as error) {
+        <div class="error-box">{{ error }}</div>
+      }
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="field">
+          <label for="email">אימייל</label>
+          <ion-input
+            id="email"
+            type="email"
+            dir="ltr"
+            formControlName="email"
+            placeholder="name@example.com"
+            fill="outline"
+          />
+        </div>
+
+        <div class="field">
+          <label for="password">סיסמה</label>
+          <ion-input
+            id="password"
+            type="password"
+            dir="ltr"
+            formControlName="password"
+            fill="outline"
+          >
+            <ion-input-password-toggle slot="end" />
+          </ion-input>
+        </div>
+
+        <ion-button
+          expand="block"
+          type="submit"
+          [disabled]="submitting() || form.invalid"
+          class="submit-button"
+        >
+          @if (submitting()) {
+            <ion-spinner name="crescent" />
+            <span>מתחבר...</span>
+          } @else {
+            <span>התחבר</span>
+          }
+        </ion-button>
+      </form>
+    </div>
+  </div>
+</ion-content>

@@ -1,0 +1,75 @@
+@use 'styles/variables' as *;
+
+.login-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100%;
+  padding: $space-4;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  background: #ffffff;
+  border: 1px solid $card-border;
+  border-radius: $card-radius;
+  box-shadow: $card-shadow;
+  padding: $space-8;
+}
+
+.title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: $primary;
+  margin: 0 0 $space-1 0;
+  text-align: center;
+}
+
+.subtitle {
+  font-size: 0.875rem;
+  color: $gray-500;
+  margin: 0 0 $space-6 0;
+  text-align: center;
+}
+
+.error-box {
+  background: #FEF2F2;
+  border: 1px solid #FECACA;
+  border-radius: 8px;
+  padding: $space-3 $space-4;
+  margin-bottom: $space-4;
+  color: $danger;
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.field {
+  margin-bottom: $space-4;
+
+  label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: $gray-700;
+    margin-bottom: $space-1;
+  }
+
+  ion-input {
+    --border-radius: 8px;
+    --padding-start: 12px;
+    --padding-end: 12px;
+  }
+}
+
+.submit-button {
+  margin-top: $space-6;
+  --border-radius: 8px;
+  font-weight: 600;
+
+  ion-spinner {
+    width: 18px;
+    height: 18px;
+    margin-inline-end: $space-2;
+  }
+}
