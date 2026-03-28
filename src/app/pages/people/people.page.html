@@ -1,0 +1,99 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>אנשים</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  @if (isLoading()) {
+    <div class="loading-container">
+      <ion-spinner name="crescent"></ion-spinner>
+      <p class="loading-text">טוען אנשים...</p>
+    </div>
+  } @else {
+    <div class="page-content">
+
+      <app-people-summary
+        [atBaseCount]="atBaseCount()"
+        [notAtBaseCount]="notAtBaseCount()"
+        [homeCount]="homeCount()"
+        [onTaskCount]="onTaskCount()"
+      />
+
+      <div class="add-section">
+        <ion-button (click)="toggleAddForm()" fill="solid">
+          @if (showAddForm()) {
+            <span>סגור</span>
+          } @else {
+            <span>איש צוות חדש</span>
+          }
+        </ion-button>
+      </div>
+
+      @if (showAddForm()) {
+        <app-person-form
+          #personForm
+          (addPerson)="onAdd($event)"
+          (cancel)="showAddForm.set(false)"
+        />
+      }
+
+      @if (atBasePeople().length === 0 && notAtBasePeople().length === 0) {
+        <div class="empty-state">
+          <p>אין אנשים. הוסף איש צוות ראשון.</p>
+        </div>
+      } @else {
+        @if (atBasePeople().length > 0) {
+          <app-people-table
+            #atBaseTable
+            [people]="atBasePeople()"
+            [editingPersonId]="editingPersonId()"
+            (startEdit)="onStartEdit($event)"
+            (cancelEdit)="onCancelEdit()"
+            (saveEdit)="onSaveEdit($event)"
+            (requestDelete)="onRequestDelete($event)"
+            (requestStatusChange)="onRequestStatusChange($event)"
+          />
+        }
+
+        @if (notAtBasePeople().length > 0) {
+          <app-people-table
+            [people]="notAtBasePeople()"
+            [editingPersonId]="editingPersonId()"
+            [sectionTitle]="'לא בבסיס'"
+            [dimmed]="true"
+            (startEdit)="onStartEdit($event)"
+            (cancelEdit)="onCancelEdit()"
+            (saveEdit)="onSaveEdit($event)"
+            (requestDelete)="onRequestDelete($event)"
+            (requestStatusChange)="onRequestStatusChange($event)"
+          />
+        }
+      }
+    </div>
+  }
+
+  <!-- Delete confirmation modal -->
+  @if (deleteTarget(); as person) {
+    <app-confirm-modal
+      [title]="'מחיקת איש צוות'"
+      [message]="'למחוק את ' + person.full_name + '? האדם יוסתר אך יישמר בהיסטוריית המשימות.'"
+      [confirmText]="'מחק'"
+      [confirmColor]="'danger'"
+      (confirm)="confirmDelete()"
+      (cancel)="cancelDelete()"
+    />
+  }
+
+  <!-- Status change warning modal -->
+  @if (statusWarning(); as warning) {
+    <app-confirm-modal
+      [title]="'שינוי סטטוס'"
+      [message]="'לאדם זה יש ' + warning.person.scheduled_mission_count + ' משימות מתוזמנות. האם להמשיך?'"
+      [confirmText]="'המשך'"
+      [confirmColor]="'warning'"
+      (confirm)="confirmStatusChange()"
+      (cancel)="cancelStatusChange()"
+    />
+  }
+</ion-content>

@@ -1,0 +1,108 @@
+@if (sectionTitle(); as title) {
+  <h3 class="section-title">{{ title }}</h3>
+}
+
+<div class="table-wrapper" [class.dimmed]="dimmed()">
+  <div class="table-header">
+    <span>שם</span>
+    <span>תפקיד</span>
+    <span>טלפון</span>
+    <span>סטטוס</span>
+    <span>נושא נשק</span>
+    <span>הערות</span>
+    <span>פעולות</span>
+  </div>
+
+  @for (person of people(); track person.id) {
+    @if (editingPersonId() === person.id) {
+      <!-- Edit mode — expanded form -->
+      <form class="edit-card" [formGroup]="editForm" (ngSubmit)="onSaveEdit(person)">
+        @if (editError(); as error) {
+          <div class="row-error">{{ error }}</div>
+        }
+        <div class="edit-grid">
+          <div class="edit-field">
+            <label>שם מלא *</label>
+            <ion-input formControlName="full_name" fill="outline" />
+          </div>
+          <div class="edit-field">
+            <label>תפקיד</label>
+            <ion-select formControlName="role" interface="popover" fill="outline">
+              @for (r of allRoles; track r) {
+                <ion-select-option [value]="r">{{ roleLabels[r] }}</ion-select-option>
+              }
+            </ion-select>
+          </div>
+          <div class="edit-field">
+            <label>טלפון *</label>
+            <ion-input formControlName="phone" fill="outline" dir="ltr" />
+          </div>
+          <div class="edit-field">
+            <label>סטטוס</label>
+            <ion-select formControlName="status" interface="popover" fill="outline" (ionChange)="onEditStatusChange()">
+              @for (s of allStatuses; track s) {
+                <ion-select-option [value]="s">{{ statusLabels[s] }}</ion-select-option>
+              }
+            </ion-select>
+          </div>
+          @if (editStatusIsHome()) {
+            <div class="edit-field">
+              <label>תאריך חזרה *</label>
+              <ion-input formControlName="return_date" type="date" fill="outline" dir="ltr" />
+            </div>
+          }
+          <div class="edit-field">
+            <label>דרגה</label>
+            <ion-input formControlName="rank" fill="outline" />
+          </div>
+          <div class="edit-field toggle-field">
+            <label>נושא נשק</label>
+            <ion-toggle formControlName="has_weapon" />
+          </div>
+          <div class="edit-field">
+            <label>רישיון רכב</label>
+            <ion-input formControlName="vehicle_license_class" fill="outline" placeholder="A, B, C..." />
+          </div>
+          <div class="edit-field">
+            <label>איש קשר חירום</label>
+            <ion-input formControlName="emergency_contact_name" fill="outline" />
+          </div>
+          <div class="edit-field">
+            <label>טלפון חירום</label>
+            <ion-input formControlName="emergency_contact_phone" fill="outline" dir="ltr" />
+          </div>
+          <div class="edit-field full-width">
+            <label>הערות</label>
+            <ion-input formControlName="notes" fill="outline" />
+          </div>
+        </div>
+        <div class="edit-actions">
+          <ion-button size="small" type="submit" color="success">שמור</ion-button>
+          <ion-button size="small" fill="outline" color="medium" (click)="cancelEdit.emit()">ביטול</ion-button>
+        </div>
+      </form>
+    } @else {
+      <!-- Display mode -->
+      <div class="table-row">
+        <span class="cell person-name">{{ person.full_name }}</span>
+        <span class="cell">{{ roleLabels[person.role] }}</span>
+        <span class="cell phone" dir="ltr">{{ formatPhone(person.phone) }}</span>
+        <span class="cell">
+          <span
+            class="status-badge"
+            [style.background]="statusColors[person.status].bg"
+            [style.color]="statusColors[person.status].text"
+          >
+            {{ statusLabels[person.status] }}
+          </span>
+        </span>
+        <span class="cell">{{ person.has_weapon ? 'כן' : 'לא' }}</span>
+        <span class="cell notes">{{ person.notes ?? '—' }}</span>
+        <span class="cell actions">
+          <ion-button size="small" fill="outline" (click)="onStartEdit(person)">עריכה</ion-button>
+          <ion-button size="small" fill="outline" color="danger" (click)="requestDelete.emit(person)">מחיקה</ion-button>
+        </span>
+      </div>
+    }
+  }
+</div>

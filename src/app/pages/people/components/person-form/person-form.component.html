@@ -1,0 +1,132 @@
+<div class="form-card">
+  <h3 class="form-title">איש צוות חדש</h3>
+
+  @if (errorMessage(); as error) {
+    <div class="error-box">{{ error }}</div>
+  }
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="form-grid">
+      <div class="field">
+        <label>שם מלא *</label>
+        <ion-input
+          formControlName="full_name"
+          placeholder="שם מלא"
+          fill="outline"
+        />
+      </div>
+
+      <div class="field">
+        <label>תפקיד *</label>
+        <ion-select formControlName="role" interface="popover" fill="outline">
+          @for (r of allRoles; track r) {
+            <ion-select-option [value]="r">{{ roleLabels[r] }}</ion-select-option>
+          }
+        </ion-select>
+      </div>
+
+      <div class="field">
+        <label>טלפון *</label>
+        <ion-input
+          formControlName="phone"
+          placeholder="050-1234567"
+          fill="outline"
+          dir="ltr"
+        />
+      </div>
+
+      <div class="field">
+        <label>סטטוס</label>
+        <ion-select formControlName="status" interface="popover" fill="outline" (ionChange)="onStatusChange()">
+          @for (s of allStatuses; track s) {
+            <ion-select-option [value]="s">{{ statusLabels[s] }}</ion-select-option>
+          }
+        </ion-select>
+      </div>
+
+      @if (statusIsHome()) {
+        <div class="field">
+          <label>תאריך חזרה *</label>
+          <ion-input
+            formControlName="return_date"
+            type="date"
+            fill="outline"
+            dir="ltr"
+          />
+        </div>
+      }
+
+      <div class="field">
+        <label>דרגה</label>
+        <ion-input
+          formControlName="rank"
+          placeholder="אופציונלי"
+          fill="outline"
+        />
+      </div>
+
+      <div class="field toggle-field">
+        <label>נושא נשק</label>
+        <ion-toggle formControlName="has_weapon" />
+      </div>
+
+      <div class="field">
+        <label>רישיון רכב</label>
+        <ion-input
+          formControlName="vehicle_license_class"
+          placeholder="A, B, C..."
+          fill="outline"
+        />
+      </div>
+
+      <div class="field">
+        <label>איש קשר חירום</label>
+        <ion-input
+          formControlName="emergency_contact_name"
+          placeholder="אופציונלי"
+          fill="outline"
+        />
+      </div>
+
+      <div class="field">
+        <label>טלפון חירום</label>
+        <ion-input
+          formControlName="emergency_contact_phone"
+          placeholder="אופציונלי"
+          fill="outline"
+          dir="ltr"
+        />
+      </div>
+
+      <div class="field full-width">
+        <label>הערות</label>
+        <ion-input
+          formControlName="notes"
+          placeholder="אופציונלי"
+          fill="outline"
+        />
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <ion-button
+        type="submit"
+        [disabled]="submitting() || form.invalid"
+      >
+        @if (submitting()) {
+          <ion-spinner name="crescent" />
+          <span>מוסיף...</span>
+        } @else {
+          <span>הוסף</span>
+        }
+      </ion-button>
+      <ion-button
+        fill="outline"
+        color="medium"
+        (click)="cancel.emit()"
+      >
+        ביטול
+      </ion-button>
+    </div>
+  </form>
+</div>

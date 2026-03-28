@@ -1,0 +1,153 @@
+@use 'styles/variables' as *;
+
+.section-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: $gray-500;
+  margin: $space-6 0 $space-3 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.table-wrapper {
+  background: #ffffff;
+  border: 1px solid $card-border;
+  border-radius: $card-radius;
+  box-shadow: $card-shadow;
+  overflow: hidden;
+
+  &.dimmed {
+    opacity: 0.75;
+  }
+}
+
+.table-header {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr 1fr 0.8fr 0.7fr 1fr 1fr;
+  gap: $space-3;
+  padding: $space-3 $space-4;
+  background: $gray-50;
+  border-bottom: 1px solid $gray-200;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: $gray-500;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.table-row {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr 1fr 0.8fr 0.7fr 1fr 1fr;
+  gap: $space-3;
+  padding: $space-3 $space-4;
+  border-bottom: 1px solid $gray-100;
+  align-items: center;
+  font-size: 0.875rem;
+  color: $gray-700;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.person-name {
+  font-weight: 600;
+  color: $gray-900;
+}
+
+.phone {
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.notes {
+  color: $gray-400;
+  font-size: 0.8rem;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 2px $space-3;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.actions {
+  display: flex;
+  gap: $space-2;
+
+  ion-button {
+    --border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+}
+
+// Edit card — expanded form replacing the row
+.edit-card {
+  background: $gray-50;
+  padding: $space-4;
+  border-bottom: 1px solid $gray-100;
+}
+
+.row-error {
+  padding: $space-2 $space-4;
+  background: #FEF2F2;
+  color: #EF4444;
+  font-size: 0.8rem;
+  border-radius: 6px;
+  margin-bottom: $space-3;
+}
+
+.edit-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $space-4;
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.edit-field {
+  label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: $gray-600;
+    margin-bottom: $space-1;
+  }
+
+  ion-input, ion-select {
+    --border-radius: 6px;
+    font-size: 0.875rem;
+  }
+
+  &.full-width {
+    grid-column: 1 / -1;
+  }
+
+  &.toggle-field {
+    display: flex;
+    align-items: center;
+    gap: $space-3;
+    padding-top: $space-5;
+
+    label {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.edit-actions {
+  display: flex;
+  gap: $space-2;
+  margin-top: $space-4;
+
+  ion-button {
+    --border-radius: 6px;
+    font-weight: 600;
+  }
+}

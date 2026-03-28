@@ -1,0 +1,21 @@
+<div class="summary-row">
+  <div class="summary-card at-base-card">
+    <span class="card-count">{{ atBaseCount() }}</span>
+    <span class="card-label">בבסיס</span>
+  </div>
+
+  <div class="summary-card not-at-base-card">
+    <span class="card-count">{{ notAtBaseCount() }}</span>
+    <span class="card-label">לא בבסיס</span>
+    @if (notAtBaseCount() > 0) {
+      <div class="breakdown">
+        @if (homeCount() > 0) {
+          <span class="breakdown-badge home">{{ homeCount() }} בבית</span>
+        }
+        @if (onTaskCount() > 0) {
+          <span class="breakdown-badge on-task">{{ onTaskCount() }} במשימה</span>
+        }
+      </div>
+    }
+  </div>
+</div>

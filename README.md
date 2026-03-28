@@ -38,7 +38,7 @@ ng serve
 | 1 | Login | `/login` | Done | Email/password auth, session persistence, route guards |
 | 2 | Dashboard | `/` | Done | Mission list, status transitions, summary KPIs, draft management |
 | 3 | Trucks | `/trucks` | Done | CRUD table with inline edit, status badges, summary cards |
-| 4 | People | `/people` | Planned | Same CRUD pattern as trucks |
+| 4 | People | `/people` | Done | CRUD table with inline edit, role/status badges, conditional fields, summary cards |
 | 5 | Mission Wizard | `/wizard` | Planned | 6-step form (details → trucks → crew → route → review → send) |
 | 6 | Driver View | `/driver/:token` | Planned | Mobile view with swipe navigation, stage advancement |
 | 7 | Commander | `/commander` | Planned | Multi-team overview with drill-down |
@@ -66,15 +66,18 @@ src/
     │   └── confirm-modal/           # Reusable confirmation dialog (shared across screens)
     ├── models/
     │   ├── mission.model.ts         # Mission interfaces + helper functions + Hebrew labels
+    │   ├── person.model.ts          # Person interface, role/status types, labels, helpers
     │   ├── truck.model.ts           # Truck interface, status types, labels, helpers
     │   └── user.model.ts            # User, Team, TeamRole interfaces
     ├── mock/
     │   ├── mock-data.ts             # 8 missions with all edge cases
     │   ├── mock-auth.ts             # 3 test users with team memberships
+    │   ├── mock-people.ts           # 8 people covering all roles and statuses
     │   └── mock-trucks.ts           # 8 trucks covering all statuses
     ├── services/
     │   ├── data-service.interface.ts # Abstract DataService (swap mock ↔ socket)
     │   ├── mission.service.ts       # Mock mission CRUD
+    │   ├── person.service.ts        # Mock person CRUD with phone validation
     │   ├── resource.service.ts      # Truck/people totals
     │   ├── truck.service.ts         # Mock truck CRUD
     │   ├── auth.service.ts          # Mock auth with session persistence
@@ -92,6 +95,14 @@ src/
         │       ├── truck-summary/   # Active/inactive count cards
         │       ├── truck-table/     # Table with inline edit mode
         │       └── truck-form/      # Add new truck form
+        ├── people/
+        │   ├── people.page.ts       # CRUD page with summary, table, form, modals
+        │   ├── people.page.html
+        │   ├── people.page.scss
+        │   └── components/
+        │       ├── people-summary/  # At-base/not-at-base count cards
+        │       ├── people-table/    # Table with expanded inline edit form
+        │       └── person-form/     # Add new person form (2-column, conditional fields)
         └── dashboard/
             ├── dashboard.page.ts    # Signals, event handlers, computed state
             ├── dashboard.page.html
@@ -267,6 +278,34 @@ Mission
 └── custom_risks?: { id, title, content }[]
 ```
 
+Person types in `models/person.model.ts`:
+
+```
+Person
+├── full_name: string
+├── role: PersonRole ('driver' | 'co_driver' | 'both' | 'commander')
+├── phone: string (validated 9-15 digits)
+├── status: PersonStatus ('at_base' | 'home' | 'on_task')
+├── return_date: string | null (only when status === 'home')
+├── rank: string | null
+├── has_weapon: boolean
+├── vehicle_license_class: string | null
+├── emergency_contact_name: string | null
+├── emergency_contact_phone: string | null
+├── notes: string | null
+├── team_id: string
+└── scheduled_mission_count: number
+```
+
+**Person helper functions** (exported from `person.model.ts`):
+- `isAtBase(person)` — checks if status is at_base
+- `formatPhone(phone)` — formats phone for display
+- `validatePhone(phone)` — validates phone format (9-15 digits)
+
+**Person Hebrew label maps:** `PERSON_ROLE_LABELS`, `PERSON_STATUS_LABELS`, `PERSON_STATUS_COLORS`
+
+**Person status values:** `at_base` (green) | `home` (amber) | `on_task` (red)
+
 User/team types in `models/user.model.ts`:
 
 ```
@@ -309,6 +348,8 @@ Per-status colors: `$status-{draft|active|scheduled|completed|cancelled}-bg` and
 **Auth** (`mock/mock-auth.ts`): 3 users covering member, commander (multi-team), and admin roles. All passwords: `1234`.
 
 **Missions** (`mock/mock-data.ts`): 8 missions covering every status and edge case. Dates are dynamically computed (today, tomorrow, past, future) so data always looks fresh.
+
+**People** (`mock/mock-people.ts`): 8 people covering all 4 roles (driver, co_driver, both, commander), all 3 statuses (at_base, home, on_task), varied weapon/rank/license/emergency contact combinations, and edge cases (home with scheduled missions, on_task with missions).
 
 ## How to Add a New Screen
 

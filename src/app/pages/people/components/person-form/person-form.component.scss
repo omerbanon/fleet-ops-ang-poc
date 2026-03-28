@@ -1,0 +1,85 @@
+@use 'styles/variables' as *;
+
+.form-card {
+  background: #ffffff;
+  border: 1px solid $card-border;
+  border-radius: $card-radius;
+  box-shadow: $card-shadow;
+  padding: $space-5;
+  margin-bottom: $space-6;
+}
+
+.form-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: $gray-800;
+  margin: 0 0 $space-4 0;
+}
+
+.error-box {
+  background: #FEF2F2;
+  border: 1px solid #FECACA;
+  border-radius: 8px;
+  padding: $space-3 $space-4;
+  margin-bottom: $space-4;
+  color: #EF4444;
+  font-size: 0.875rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $space-4;
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.field {
+  label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: $gray-700;
+    margin-bottom: $space-1;
+  }
+
+  ion-input, ion-select {
+    --border-radius: 8px;
+    --padding-start: 12px;
+    --padding-end: 12px;
+  }
+
+  &.full-width {
+    grid-column: 1 / -1;
+  }
+
+  &.toggle-field {
+    display: flex;
+    align-items: center;
+    gap: $space-3;
+    padding-top: $space-5;
+
+    label {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.form-actions {
+  display: flex;
+  gap: $space-3;
+  margin-top: $space-5;
+
+  ion-button {
+    --border-radius: 8px;
+    font-weight: 600;
+
+    ion-spinner {
+      width: 18px;
+      height: 18px;
+      margin-inline-end: $space-2;
+    }
+  }
+}
