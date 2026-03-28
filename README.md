@@ -37,7 +37,7 @@ ng serve
 |---|--------|-------|--------|-------------|
 | 1 | Login | `/login` | Done | Email/password auth, session persistence, route guards |
 | 2 | Dashboard | `/` | Done | Mission list, status transitions, summary KPIs, draft management |
-| 3 | Trucks | `/trucks` | Planned | CRUD table with inline edit, status badges |
+| 3 | Trucks | `/trucks` | Done | CRUD table with inline edit, status badges, summary cards |
 | 4 | People | `/people` | Planned | Same CRUD pattern as trucks |
 | 5 | Mission Wizard | `/wizard` | Planned | 6-step form (details → trucks → crew → route → review → send) |
 | 6 | Driver View | `/driver/:token` | Planned | Mobile view with swipe navigation, stage advancement |
@@ -62,16 +62,21 @@ src/
     ├── app.routes.ts                # Lazy routes with auth guards
     ├── guards/
     │   └── auth.guard.ts            # authGuard + loginGuard (functional guards)
+    ├── components/
+    │   └── confirm-modal/           # Reusable confirmation dialog (shared across screens)
     ├── models/
     │   ├── mission.model.ts         # Mission interfaces + helper functions + Hebrew labels
+    │   ├── truck.model.ts           # Truck interface, status types, labels, helpers
     │   └── user.model.ts            # User, Team, TeamRole interfaces
     ├── mock/
     │   ├── mock-data.ts             # 8 missions with all edge cases
-    │   └── mock-auth.ts             # 3 test users with team memberships
+    │   ├── mock-auth.ts             # 3 test users with team memberships
+    │   └── mock-trucks.ts           # 8 trucks covering all statuses
     ├── services/
     │   ├── data-service.interface.ts # Abstract DataService (swap mock ↔ socket)
     │   ├── mission.service.ts       # Mock mission CRUD
     │   ├── resource.service.ts      # Truck/people totals
+    │   ├── truck.service.ts         # Mock truck CRUD
     │   ├── auth.service.ts          # Mock auth with session persistence
     │   └── team.service.ts          # Active team selection (localStorage)
     └── pages/
@@ -79,6 +84,14 @@ src/
         │   ├── login.page.ts        # Reactive form, auth flow, error handling
         │   ├── login.page.html
         │   └── login.page.scss
+        ├── trucks/
+        │   ├── trucks.page.ts       # CRUD page with summary, table, form, modals
+        │   ├── trucks.page.html
+        │   ├── trucks.page.scss
+        │   └── components/
+        │       ├── truck-summary/   # Active/inactive count cards
+        │       ├── truck-table/     # Table with inline edit mode
+        │       └── truck-form/      # Add new truck form
         └── dashboard/
             ├── dashboard.page.ts    # Signals, event handlers, computed state
             ├── dashboard.page.html

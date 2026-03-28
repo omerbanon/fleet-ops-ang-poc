@@ -1,0 +1,46 @@
+@use 'styles/variables' as *;
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: $space-4;
+}
+
+.modal-card {
+  background: #ffffff;
+  border-radius: $card-radius;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  padding: $space-6;
+  max-width: 400px;
+  width: 100%;
+}
+
+.modal-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: $gray-900;
+  margin: 0 0 $space-2 0;
+}
+
+.modal-message {
+  font-size: 0.875rem;
+  color: $gray-600;
+  margin: 0 0 $space-6 0;
+  line-height: 1.5;
+}
+
+.modal-actions {
+  display: flex;
+  gap: $space-3;
+
+  ion-button {
+    flex: 1;
+    --border-radius: 8px;
+    font-weight: 600;
+  }
+}

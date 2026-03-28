@@ -1,0 +1,69 @@
+@if (sectionTitle(); as title) {
+  <h3 class="section-title">{{ title }}</h3>
+}
+
+<div class="table-wrapper" [class.dimmed]="dimmed()">
+  <div class="table-header">
+    <span>מספר רכב</span>
+    <span>סוג</span>
+    <span>קיבולת</span>
+    <span>סטטוס</span>
+    <span>הערות</span>
+    <span>פעולות</span>
+  </div>
+
+  @for (truck of trucks(); track truck.id) {
+    @if (editingTruckId() === truck.id) {
+      <!-- Edit mode -->
+      <form class="table-row edit-row" [formGroup]="editForm" (ngSubmit)="onSaveEdit(truck)">
+        <span class="cell">
+          <ion-input formControlName="vehicle_id" fill="outline" dir="ltr" />
+        </span>
+        <span class="cell">
+          <ion-input formControlName="type" fill="outline" />
+        </span>
+        <span class="cell">
+          <ion-input formControlName="capacity_kg" type="number" fill="outline" dir="ltr" />
+        </span>
+        <span class="cell">
+          <ion-select formControlName="status" interface="popover" fill="outline">
+            @for (s of allStatuses; track s) {
+              <ion-select-option [value]="s">{{ statusLabels[s] }}</ion-select-option>
+            }
+          </ion-select>
+        </span>
+        <span class="cell">
+          <ion-input formControlName="notes" fill="outline" />
+        </span>
+        <span class="cell actions">
+          <ion-button size="small" type="submit" color="success">שמור</ion-button>
+          <ion-button size="small" fill="outline" color="medium" (click)="cancelEdit.emit()">ביטול</ion-button>
+        </span>
+      </form>
+      @if (editError(); as error) {
+        <div class="row-error">{{ error }}</div>
+      }
+    } @else {
+      <!-- Display mode -->
+      <div class="table-row">
+        <span class="cell vehicle-id">{{ truck.vehicle_id }}</span>
+        <span class="cell">{{ truck.type }}</span>
+        <span class="cell">{{ formatCapacity(truck.capacity_kg) }}</span>
+        <span class="cell">
+          <span
+            class="status-badge"
+            [style.background]="statusColors[truck.status].bg"
+            [style.color]="statusColors[truck.status].text"
+          >
+            {{ statusLabels[truck.status] }}
+          </span>
+        </span>
+        <span class="cell notes">{{ truck.notes ?? '—' }}</span>
+        <span class="cell actions">
+          <ion-button size="small" fill="outline" (click)="onStartEdit(truck)">עריכה</ion-button>
+          <ion-button size="small" fill="outline" color="danger" (click)="requestDelete.emit(truck)">מחיקה</ion-button>
+        </span>
+      </div>
+    }
+  }
+</div>

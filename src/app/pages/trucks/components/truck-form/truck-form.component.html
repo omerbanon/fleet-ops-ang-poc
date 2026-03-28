@@ -1,0 +1,71 @@
+<div class="form-card">
+  <h3 class="form-title">רכב חדש</h3>
+
+  @if (errorMessage(); as error) {
+    <div class="error-box">{{ error }}</div>
+  }
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="form-grid">
+      <div class="field">
+        <label>מספר רכב *</label>
+        <ion-input
+          formControlName="vehicle_id"
+          placeholder="לדוגמה: 85-432-12"
+          fill="outline"
+          dir="ltr"
+        />
+      </div>
+
+      <div class="field">
+        <label>סוג *</label>
+        <ion-input
+          formControlName="type"
+          placeholder="לדוגמה: משאית, רכב שטח"
+          fill="outline"
+        />
+      </div>
+
+      <div class="field">
+        <label>קיבולת (ק"ג)</label>
+        <ion-input
+          formControlName="capacity_kg"
+          type="number"
+          placeholder="אופציונלי"
+          fill="outline"
+          dir="ltr"
+        />
+      </div>
+
+      <div class="field">
+        <label>הערות</label>
+        <ion-input
+          formControlName="notes"
+          placeholder="אופציונלי"
+          fill="outline"
+        />
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <ion-button
+        type="submit"
+        [disabled]="submitting() || form.invalid"
+      >
+        @if (submitting()) {
+          <ion-spinner name="crescent" />
+          <span>מוסיף...</span>
+        } @else {
+          <span>הוסף</span>
+        }
+      </ion-button>
+      <ion-button
+        fill="outline"
+        color="medium"
+        (click)="cancel.emit()"
+      >
+        ביטול
+      </ion-button>
+    </div>
+  </form>
+</div>

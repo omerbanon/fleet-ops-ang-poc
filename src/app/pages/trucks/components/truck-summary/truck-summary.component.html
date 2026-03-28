@@ -1,0 +1,21 @@
+<div class="summary-row">
+  <div class="summary-card active-card">
+    <span class="card-count">{{ activeCount() }}</span>
+    <span class="card-label">פעילים</span>
+  </div>
+
+  <div class="summary-card inactive-card">
+    <span class="card-count">{{ inactiveCount() }}</span>
+    <span class="card-label">לא פעילים</span>
+    @if (inactiveCount() > 0) {
+      <div class="breakdown">
+        @if (maintenanceCount() > 0) {
+          <span class="breakdown-badge maintenance">{{ maintenanceCount() }} בתחזוקה</span>
+        }
+        @if (outOfServiceCount() > 0) {
+          <span class="breakdown-badge out-of-service">{{ outOfServiceCount() }} תקול</span>
+        }
+      </div>
+    }
+  </div>
+</div>

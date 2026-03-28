@@ -1,0 +1,99 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>משאיות</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  @if (isLoading()) {
+    <div class="loading-container">
+      <ion-spinner name="crescent"></ion-spinner>
+      <p class="loading-text">טוען רכבים...</p>
+    </div>
+  } @else {
+    <div class="page-content">
+
+      <app-truck-summary
+        [activeCount]="activeCount()"
+        [inactiveCount]="inactiveCount()"
+        [maintenanceCount]="maintenanceCount()"
+        [outOfServiceCount]="outOfServiceCount()"
+      />
+
+      <div class="add-section">
+        <ion-button (click)="toggleAddForm()" fill="solid">
+          @if (showAddForm()) {
+            <span>סגור</span>
+          } @else {
+            <span>רכב חדש</span>
+          }
+        </ion-button>
+      </div>
+
+      @if (showAddForm()) {
+        <app-truck-form
+          #truckForm
+          (addTruck)="onAdd($event)"
+          (cancel)="showAddForm.set(false)"
+        />
+      }
+
+      @if (activeTrucks().length === 0 && inactiveTrucks().length === 0) {
+        <div class="empty-state">
+          <p>אין רכבים. הוסף רכב ראשון.</p>
+        </div>
+      } @else {
+        @if (activeTrucks().length > 0) {
+          <app-truck-table
+            #activeTable
+            [trucks]="activeTrucks()"
+            [editingTruckId]="editingTruckId()"
+            (startEdit)="onStartEdit($event)"
+            (cancelEdit)="onCancelEdit()"
+            (saveEdit)="onSaveEdit($event)"
+            (requestDelete)="onRequestDelete($event)"
+            (requestStatusChange)="onRequestStatusChange($event)"
+          />
+        }
+
+        @if (inactiveTrucks().length > 0) {
+          <app-truck-table
+            [trucks]="inactiveTrucks()"
+            [editingTruckId]="editingTruckId()"
+            [sectionTitle]="'לא פעילים'"
+            [dimmed]="true"
+            (startEdit)="onStartEdit($event)"
+            (cancelEdit)="onCancelEdit()"
+            (saveEdit)="onSaveEdit($event)"
+            (requestDelete)="onRequestDelete($event)"
+            (requestStatusChange)="onRequestStatusChange($event)"
+          />
+        }
+      }
+    </div>
+  }
+
+  <!-- Delete confirmation modal -->
+  @if (deleteTarget(); as truck) {
+    <app-confirm-modal
+      [title]="'מחיקת רכב'"
+      [message]="'למחוק את רכב ' + truck.vehicle_id + '? הרכב יוסתר אך יישמר בהיסטוריית המשימות.'"
+      [confirmText]="'מחק'"
+      [confirmColor]="'danger'"
+      (confirm)="confirmDelete()"
+      (cancel)="cancelDelete()"
+    />
+  }
+
+  <!-- Status change warning modal -->
+  @if (statusWarning(); as warning) {
+    <app-confirm-modal
+      [title]="'שינוי סטטוס'"
+      [message]="'לרכב זה יש ' + warning.truck.scheduled_mission_count + ' משימות מתוזמנות. האם להמשיך?'"
+      [confirmText]="'המשך'"
+      [confirmColor]="'warning'"
+      (confirm)="confirmStatusChange()"
+      (cancel)="cancelStatusChange()"
+    />
+  }
+</ion-content>
