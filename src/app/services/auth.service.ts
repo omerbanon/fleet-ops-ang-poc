@@ -17,7 +17,6 @@ export class AuthService {
     this.restoreSession();
   }
 
-  /** Check localStorage for existing session on app load */
   private restoreSession(): void {
     const storedUserId = localStorage.getItem('auth_user_id');
 
@@ -27,16 +26,18 @@ export class AuthService {
         const user = MOCK_USERS.find(u => u.id === storedUserId);
         if (user) {
           this.setUser(user);
+          this.loadingSubject.next(false);
+          return;
         }
       }
       this.loadingSubject.next(false);
     }, 300);
   }
 
-  private setUser(mockUser: { id: string; email: string }): void {
-    const user: User = { id: mockUser.id, email: mockUser.email };
+  private setUser(user: User): void {
     this.userSubject.next(user);
-    this.teamsSubject.next(MOCK_TEAM_MEMBERSHIPS[user.id] ?? []);
+    const teams = MOCK_TEAM_MEMBERSHIPS[user.id] ?? [];
+    this.teamsSubject.next(teams);
     localStorage.setItem('auth_user_id', user.id);
   }
 
@@ -45,6 +46,7 @@ export class AuthService {
     await new Promise(resolve => setTimeout(resolve, 600));
 
     const user = MOCK_USERS.find(u => u.email === email && u.password === password);
+
     if (!user) {
       return { error: 'אימייל או סיסמה שגויים' };
     }

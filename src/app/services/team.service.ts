@@ -29,11 +29,11 @@ export class TeamService {
   readonly teams$ = this.authService.teams$;
 
   constructor() {
-    // Validate stored selection when teams change
     this.authService.teams$.subscribe(teams => {
       if (!teams.length) return;
       const storedId = this.selectedTeamIdSubject.value;
-      if (!teams.some(t => t.id === storedId)) {
+      const valid = teams.some(t => t.id === storedId);
+      if (!valid) {
         this.setSelectedTeam(teams[0].id);
       }
     });

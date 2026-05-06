@@ -1,14 +1,14 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { IonContent, IonButton, IonSpinner, IonInput } from '@ionic/angular/standalone';
+import { IonContent, IonButton, IonSpinner, IonInput, IonInputPasswordToggle } from '@ionic/angular/standalone';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [
-    IonContent, IonButton, IonSpinner, IonInput,
+    IonContent, IonButton, IonSpinner, IonInput, IonInputPasswordToggle,
     ReactiveFormsModule,
   ],
   templateUrl: './login.page.html',
