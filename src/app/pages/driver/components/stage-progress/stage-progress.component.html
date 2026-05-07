@@ -1,0 +1,16 @@
+<div class="progress" dir="ltr">
+  @for (stage of stages; track stage.id; let i = $index; let last = $last) {
+    <button
+      type="button"
+      class="dot"
+      [class.completed]="isCompleted(i)"
+      [class.active]="isActive(i)"
+      [class.viewed]="isViewed(i)"
+      (click)="onClick(i)"
+      [attr.aria-label]="'שלב ' + stage.stage_order"
+    ></button>
+    @if (!last) {
+      <span class="connector" [class.completed]="isConnectorComplete(i)"></span>
+    }
+  }
+</div>

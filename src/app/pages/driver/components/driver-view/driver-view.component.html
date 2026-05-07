@@ -1,0 +1,120 @@
+@switch (state()) {
+  @case ('loading') {
+    <div class="state-screen">
+      <ion-spinner name="crescent" />
+      <p>טוען…</p>
+    </div>
+  }
+
+  @case ('invalid') {
+    <div class="state-screen">
+      <div class="state-icon error">✕</div>
+      <h2>קישור לא תקין</h2>
+      <p>הקישור שקיבלת אינו תקף.</p>
+    </div>
+  }
+
+  @case ('expired') {
+    @switch (expiredBranch()) {
+      @case ('success') {
+        <div class="state-screen">
+          <div class="state-icon success">✓</div>
+          <h2>{{ errorMessage() }}</h2>
+        </div>
+      }
+      @case ('cancelled') {
+        <div class="state-screen">
+          <div class="state-icon error">✕</div>
+          <h2>{{ errorMessage() }}</h2>
+        </div>
+      }
+      @default {
+        <div class="state-screen">
+          <div class="state-icon warn">⏰</div>
+          <h2>הקישור פג תוקף</h2>
+          <p>בקש קישור חדש מהמפקד.</p>
+        </div>
+      }
+    }
+  }
+
+  @case ('error') {
+    <div class="state-screen">
+      <div class="state-icon error">⚠</div>
+      <h2>שגיאה</h2>
+      <p>אירעה שגיאה בטעינת המשימה. נסה לרענן.</p>
+    </div>
+  }
+
+  @case ('ready') {
+    @if (data(); as d) {
+      <div class="driver-screen">
+        <header class="mission-header">
+          <h1>{{ d.mission.mission_name }}</h1>
+          <div class="meta-row">
+            <span class="date">{{ d.mission.mission_date }}</span>
+            <span class="commander">
+              מפקד משלח: {{ d.mission.commander_name }}
+              @if (isCommanderPhoneShown()) {
+                <a class="phone-link" [attr.href]="'tel:' + d.mission.commander_phone" dir="ltr">{{ d.mission.commander_phone }}</a>
+              }
+            </span>
+          </div>
+        </header>
+
+        @if (d.truck) {
+          <section class="truck-info">
+            <span class="truck-label">{{ d.truck.truck_label }}</span>
+            <ul class="crew-list">
+              @for (c of d.truck.crew; track c.crew_position) {
+                <li>
+                  {{ c.name }}
+                  @let chip = driverCrewLabel(c.role); @if (chip) { <span class="role-chip">{{ chip }}</span> }
+                </li>
+              }
+            </ul>
+          </section>
+        }
+
+        @if (totalStages() > 0) {
+          <app-stage-progress
+            [stages]="stages()"
+            [viewedIndex]="viewedIndex() ?? 0"
+            [currentStageIndex]="currentStageIndex()"
+            (stageSelect)="onStageDotSelect($event)"
+          />
+        }
+
+        <div class="card-region" (touchstart)="onTouchStart($event)" (touchend)="onTouchEnd($event)">
+          @if (viewedStage(); as s) {
+            <app-stage-card
+              [stage]="s"
+              [stageIndex]="viewedIndex() ?? 0"
+              [totalStages]="totalStages()"
+            />
+          }
+
+          @if (hasNext()) {
+            <button type="button" class="nav-arrow nav-left" (click)="goNext()" aria-label="השלב הבא">‹</button>
+          }
+          @if (hasPrev()) {
+            <button type="button" class="nav-arrow nav-right" (click)="goPrev()" aria-label="השלב הקודם">›</button>
+          }
+        </div>
+
+        @if (errorMessage()) {
+          <div class="inline-error">{{ errorMessage() }}</div>
+        }
+
+        <app-driver-button
+          [viewedStage]="viewedStage()"
+          [isViewingCurrentStage]="isViewingCurrentStage()"
+          [allCompleted]="allCompleted()"
+          [missionStatus]="d.mission.status"
+          [advancing]="advancing()"
+          (advance)="onAdvance()"
+        />
+      </div>
+    }
+  }
+}

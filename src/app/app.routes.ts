@@ -27,6 +27,12 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
+    path: 'driver/:token',
+    loadComponent: () =>
+      import('./pages/driver/driver.page').then(m => m.DriverPage),
+    // No authGuard — public, token-based access
+  },
+  {
     path: '**',
     redirectTo: '',
   },
