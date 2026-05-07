@@ -60,6 +60,20 @@
     --padding-start: 12px;
     --padding-end: 12px;
   }
+
+  .password-row {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+
+    ion-input { flex: 1; }
+
+    .password-toggle {
+      --color: #{$gray-700};
+      font-size: 0.8125rem;
+      min-width: 56px;
+    }
+  }
 }
 
 .submit-button {

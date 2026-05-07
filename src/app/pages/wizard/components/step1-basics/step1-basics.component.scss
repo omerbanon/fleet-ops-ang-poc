@@ -1,0 +1,39 @@
+@use '../../../../../styles/variables' as *;
+
+.step { max-width: 560px; }
+
+.step-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: $gray-900;
+  margin: 0 0 $space-1;
+}
+
+.step-subtitle {
+  color: $gray-500;
+  margin: 0 0 $space-6;
+}
+
+.form { display: flex; flex-direction: column; gap: $space-4; }
+
+.field {
+  label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: $gray-700;
+    margin-bottom: $space-1;
+  }
+  .hint {
+    font-size: 0.8125rem;
+    color: $gray-500;
+    margin: $space-1 0 0;
+  }
+}
+
+.sticky-nav {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: $space-8;
+  ion-button { --border-radius: 8px; min-width: 120px; }
+}

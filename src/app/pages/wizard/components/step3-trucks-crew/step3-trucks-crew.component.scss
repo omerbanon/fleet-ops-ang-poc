@@ -1,0 +1,221 @@
+@use '../../../../../styles/variables' as *;
+
+.step { max-width: 880px; }
+
+.step-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: $gray-900;
+  margin: 0 0 $space-1;
+}
+
+.step-subtitle {
+  color: $gray-500;
+  margin: 0 0 $space-6;
+}
+
+.banner {
+  padding: $space-3 $space-4;
+  border-radius: 10px;
+  font-size: 0.9375rem;
+  margin-bottom: $space-4;
+}
+
+.banner-info {
+  background: rgba(59, 130, 246, 0.08);
+  color: #1E40AF;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+.staffing-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+  align-items: center;
+  margin-bottom: $space-4;
+}
+
+.pill {
+  display: inline-flex;
+  padding: $space-1 $space-3;
+  background: $gray-100;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  color: $gray-700;
+  font-weight: 600;
+}
+
+.warn {
+  color: #B45309;
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.search-bar { margin-bottom: $space-4; }
+
+.section-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: $gray-900;
+  margin: $space-6 0 $space-3;
+}
+
+.truck-list {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.truck-row {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  padding: $space-3 $space-4;
+  background: white;
+  border: 1px solid $card-border;
+  border-radius: 10px;
+
+  &.disabled { opacity: 0.5; }
+  &.custom { background: rgba(45, 95, 63, 0.04); }
+}
+
+.truck-info { flex: 1; }
+
+.truck-id {
+  font-weight: 700;
+  color: $gray-900;
+  font-size: 1rem;
+}
+
+.custom-tag {
+  font-size: 0.75rem;
+  color: $primary;
+  font-weight: 500;
+}
+
+.truck-meta {
+  display: flex;
+  gap: $space-2;
+  align-items: center;
+  font-size: 0.875rem;
+  color: $gray-500;
+  flex-wrap: wrap;
+  margin-top: 2px;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.status-badge.status-maintenance { background: rgba(245, 158, 11, 0.15); color: #B45309; }
+.status-badge.status-out_of_service { background: rgba(239, 68, 68, 0.15); color: $danger; }
+
+.conflict-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  background: rgba(245, 158, 11, 0.15);
+  color: #B45309;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.add-custom {
+  background: transparent;
+  border: 1px dashed $gray-300;
+  border-radius: 10px;
+  padding: $space-3;
+  width: 100%;
+  color: $gray-600;
+  cursor: pointer;
+  margin-top: $space-3;
+
+  &:hover { border-color: $primary; color: $primary; }
+}
+
+.inline-form {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  margin-top: $space-3;
+  padding: $space-3;
+  background: $gray-50;
+  border-radius: 10px;
+}
+
+.inline-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: $space-2;
+}
+
+.crew-cards {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+}
+
+.crew-card {
+  background: white;
+  border: 1px solid $card-border;
+  border-radius: 12px;
+  padding: $space-4;
+}
+
+.crew-header {
+  display: flex;
+  align-items: baseline;
+  gap: $space-2;
+  padding-bottom: $space-3;
+  border-bottom: 1px solid $gray-100;
+  margin-bottom: $space-3;
+}
+
+.crew-vehicle { font-weight: 700; font-size: 1rem; color: $gray-900; }
+.crew-type { font-size: 0.875rem; color: $gray-500; }
+
+.crew-row {
+  margin-bottom: $space-3;
+
+  label {
+    display: block;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: $gray-700;
+    margin-bottom: $space-1;
+  }
+}
+
+.flags {
+  display: flex;
+  gap: $space-3;
+  margin-top: $space-2;
+  flex-wrap: wrap;
+
+  ion-toggle { --handle-width: 14px; }
+}
+
+.add-slot {
+  background: transparent;
+  border: 1px dashed $gray-300;
+  border-radius: 8px;
+  padding: $space-2 $space-3;
+  color: $gray-600;
+  cursor: pointer;
+  margin-top: $space-2;
+  font-size: 0.875rem;
+
+  &:hover { border-color: $primary; color: $primary; }
+}
+
+.sticky-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: $space-3;
+  margin-top: $space-8;
+  ion-button { --border-radius: 8px; min-width: 120px; }
+}

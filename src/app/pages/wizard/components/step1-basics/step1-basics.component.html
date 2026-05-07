@@ -1,0 +1,66 @@
+<section class="step">
+  <h1 class="step-title">פרטי המשימה</h1>
+  <p class="step-subtitle">מידע בסיסי על המשימה</p>
+
+  <div class="form">
+    <div class="field">
+      <label for="mission-name">שם המשימה</label>
+      <ion-input
+        id="mission-name"
+        fill="outline"
+        placeholder='לדוגמה: "הובלת ציוד למחנה 80"'
+        [value]="name"
+        (ionInput)="onNameChange($any($event.target).value)"
+      />
+    </div>
+
+    <div class="field">
+      <label for="mission-date">תאריך</label>
+      <ion-input
+        id="mission-date"
+        type="date"
+        fill="outline"
+        [value]="date"
+        (ionInput)="onDateChange($any($event.target).value)"
+      />
+    </div>
+
+    <div class="field">
+      <label for="mission-commander">מפקד משימה</label>
+      <ion-select
+        id="mission-commander"
+        fill="outline"
+        placeholder="בחר מפקד"
+        interface="popover"
+        [value]="commanderId"
+        (ionChange)="onCommanderChange($any($event).detail.value)"
+      >
+        @for (c of commanders(); track c.id) {
+          <ion-select-option [value]="c.id">{{ c.full_name }}</ion-select-option>
+        }
+      </ion-select>
+      @if (commanders().length === 0) {
+        <p class="hint">אין מפקדים בצוות. ניתן להוסיף מפקדים במסך כוח אדם.</p>
+      }
+    </div>
+
+    <div class="field">
+      <label for="mission-type">סוג משימה</label>
+      <ion-select
+        id="mission-type"
+        fill="outline"
+        interface="popover"
+        [value]="type"
+        (ionChange)="onTypeChange($any($event).detail.value)"
+      >
+        @for (t of missionTypes; track t.value) {
+          <ion-select-option [value]="t.value">{{ t.label }}</ion-select-option>
+        }
+      </ion-select>
+    </div>
+  </div>
+
+  <footer class="sticky-nav">
+    <ion-button [disabled]="!canProceed()" (click)="onSubmit()">המשך</ion-button>
+  </footer>
+</section>

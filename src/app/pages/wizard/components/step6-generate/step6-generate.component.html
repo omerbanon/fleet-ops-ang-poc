@@ -1,0 +1,79 @@
+<section class="step">
+  <h1 class="step-title">הפקה ותזמון</h1>
+  <p class="step-subtitle">צור הודעות ותזמן את המשימה</p>
+
+  @if (state() === 'edit-diff' && changedSections().length > 0) {
+    <div class="diff-card">
+      <h2>שינויים מאז העריכה</h2>
+      <ul>
+        @for (section of changedSections(); track section) {
+          <li>{{ section }}</li>
+        }
+      </ul>
+    </div>
+  }
+
+  @if (state() === 'success') {
+    <div class="success-card">
+      <h2>המשימה תוזמנה בהצלחה</h2>
+      @if (truckTokenList().length > 0) {
+        <h3>קישורי מעקב לנהגים</h3>
+        <div class="token-list">
+          @for (item of truckTokenList(); track item.vehicleId) {
+            <div class="token-row">
+              <span class="token-vehicle">{{ item.vehicleId }}</span>
+              <span class="token-url" dir="ltr">{{ item.url }}</span>
+              <button type="button" class="whatsapp-btn" (click)="copyToken(item.url)">העתק</button>
+            </div>
+          }
+        </div>
+      }
+      <ion-button (click)="goToDashboard()">חזרה לדשבורד</ion-button>
+    </div>
+  } @else if (state() === 'loading') {
+    <div class="loading-card">
+      <ion-spinner name="crescent" />
+      <span>{{ editingMissionId ? 'שומר משימה…' : 'מתזמן משימה…' }}</span>
+    </div>
+  } @else {
+    @if (errorMessage()) {
+      <div class="error-banner">{{ errorMessage() }}</div>
+    }
+
+    <ion-segment [value]="activeTab()" (ionChange)="setTab($any($event).detail.value)">
+      <ion-segment-button value="soldiers"><ion-label>הודעה לחיילים</ion-label></ion-segment-button>
+      <ion-segment-button value="ops"><ion-label>הודעה לחמ"ל</ion-label></ion-segment-button>
+    </ion-segment>
+
+    <article class="message-box">
+      <pre>{{ activeTab() === 'soldiers' ? soldiersMessage() : opsMessage() }}</pre>
+      <ion-button
+        fill="outline"
+        size="small"
+        (click)="copyMessage(activeTab() === 'soldiers' ? soldiersMessage() : opsMessage())"
+      >העתק</ion-button>
+    </article>
+
+    <article class="docx-stub">
+      <ion-button disabled>צור מסמך DOCX</ion-button>
+      <p class="hint">יווצר אחרי חיבור שרת</p>
+    </article>
+
+    <article class="tokens-stub">
+      <h3>קישורי מעקב נהג</h3>
+      <p class="hint">קישורי מעקב נהג ייווצרו לאחר תזמון</p>
+    </article>
+  }
+
+  @if (state() !== 'success' && state() !== 'loading') {
+    <footer class="sticky-nav">
+      @if (isEditingScheduledOrActive) {
+        <ion-button fill="outline" (click)="onCancel()">ביטול</ion-button>
+        <ion-button (click)="saveEdit()">שמור שינויים</ion-button>
+      } @else {
+        <ion-button fill="outline" (click)="onBack()">הקודם</ion-button>
+        <ion-button (click)="schedule()">תזמן משימה</ion-button>
+      }
+    </footer>
+  }
+</section>

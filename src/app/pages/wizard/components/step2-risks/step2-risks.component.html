@@ -1,0 +1,93 @@
+<section class="step">
+  <h1 class="step-title">ניהול סיכונים ולוגיסטיקה</h1>
+  <p class="step-subtitle">נהלי חירום מוגדרים מראש — ערוך לפי הצורך</p>
+
+  <div class="risks">
+    @for (rf of riskFields; track rf.key) {
+      <article class="risk-card" [class.disabled]="!isEnabled(rf.key)" [class.open]="openSection() === rf.key">
+        <header class="risk-header">
+          <button type="button" class="risk-title" (click)="toggleOpen(rf.key)">
+            {{ rf.label }}
+          </button>
+          <ion-toggle
+            [checked]="isEnabled(rf.key)"
+            (ionChange)="toggleRisk(rf.key)"
+            aria-label="הפעל סיכון"
+          />
+        </header>
+        @if (openSection() === rf.key) {
+          <div class="risk-body">
+            <ion-textarea
+              fill="outline"
+              autoGrow="true"
+              [disabled]="!isEnabled(rf.key)"
+              [value]="riskContent(rf.key)"
+              (ionInput)="onContentChange(rf.key, $any($event.target).value)"
+            />
+          </div>
+        }
+      </article>
+    }
+
+    @for (cr of customRisks(); track cr.id; let i = $index) {
+      <article class="risk-card custom" [class.open]="openSection() === cr.id">
+        <header class="risk-header">
+          <button type="button" class="risk-title" (click)="toggleOpen(cr.id)">
+            {{ customRiskLetter(i) }}. {{ cr.title || 'סיכון מותאם אישית' }}
+          </button>
+          <button type="button" class="remove-btn" (click)="removeCustomRisk(cr.id)" aria-label="הסר סיכון">×</button>
+        </header>
+        @if (openSection() === cr.id) {
+          <div class="risk-body">
+            <ion-input
+              fill="outline"
+              placeholder="כותרת"
+              [value]="cr.title"
+              (ionInput)="updateCustomRisk(cr.id, 'title', $any($event.target).value)"
+            />
+            <ion-textarea
+              fill="outline"
+              autoGrow="true"
+              placeholder="הליך פעולה"
+              [value]="cr.content"
+              (ionInput)="updateCustomRisk(cr.id, 'content', $any($event.target).value)"
+            />
+          </div>
+        }
+      </article>
+    }
+
+    <button type="button" class="add-custom" (click)="addCustomRisk()">+ הוסף סיכון מותאם אישית</button>
+  </div>
+
+  <div class="phones">
+    <h2 class="phones-title">אנשי קשר</h2>
+
+    <div class="field">
+      <label>קצין רכב</label>
+      <ion-input
+        fill="outline"
+        type="tel"
+        dir="ltr"
+        [value]="trafficCoordinatorPhone"
+        (ionInput)="onTrafficPhoneChange($any($event.target).value)"
+      />
+    </div>
+
+    <div class="field">
+      <label>מפקד משלח</label>
+      <ion-input
+        fill="outline"
+        type="tel"
+        dir="ltr"
+        [value]="commanderPhone"
+        (ionInput)="onCommanderPhoneChange($any($event.target).value)"
+      />
+    </div>
+  </div>
+
+  <footer class="sticky-nav">
+    <ion-button fill="outline" (click)="onBack()">הקודם</ion-button>
+    <ion-button (click)="onSubmit()">המשך</ion-button>
+  </footer>
+</section>
