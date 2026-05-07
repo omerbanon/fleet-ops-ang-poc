@@ -1,0 +1,120 @@
+@use '../../../../../styles/variables' as *;
+
+.step { max-width: 720px; }
+
+.step-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: $gray-900;
+  margin: 0 0 $space-1;
+}
+
+.step-subtitle {
+  color: $gray-500;
+  margin: 0 0 $space-6;
+}
+
+.risks {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+}
+
+.risk-card {
+  background: white;
+  border: 1px solid $card-border;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: opacity 0.15s;
+
+  &.disabled { opacity: 0.5; }
+  &.open { border-color: $primary; }
+}
+
+.risk-header {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  padding: $space-3 $space-4;
+}
+
+.risk-title {
+  flex: 1;
+  background: transparent;
+  border: 0;
+  text-align: start;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: $gray-800;
+  cursor: pointer;
+}
+
+.remove-btn {
+  background: transparent;
+  border: 0;
+  font-size: 1.5rem;
+  color: $gray-500;
+  cursor: pointer;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover { color: $danger; }
+}
+
+.risk-body {
+  padding: 0 $space-4 $space-4;
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+}
+
+.add-custom {
+  background: transparent;
+  border: 1px dashed $gray-300;
+  border-radius: 12px;
+  padding: $space-3;
+  color: $gray-600;
+  font-size: 0.9375rem;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+
+  &:hover {
+    border-color: $primary;
+    color: $primary;
+  }
+}
+
+.phones {
+  margin-top: $space-8;
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+}
+
+.phones-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: $gray-900;
+  margin: 0 0 $space-2;
+}
+
+.field {
+  label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: $gray-700;
+    margin-bottom: $space-1;
+  }
+}
+
+.sticky-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: $space-3;
+  margin-top: $space-8;
+  ion-button { --border-radius: 8px; min-width: 120px; }
+}

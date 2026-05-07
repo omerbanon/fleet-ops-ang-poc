@@ -1,0 +1,38 @@
+@use '../../../styles/variables' as *;
+
+.wizard-content {
+  --background: #{$gray-50};
+}
+
+.wizard-layout {
+  display: flex;
+  min-height: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  &.with-vertical-stepper {
+    @media (min-width: 768px) {
+      gap: $space-8;
+    }
+  }
+}
+
+.stepper-rail {
+  display: none;
+
+  @media (min-width: 768px) {
+    display: block;
+    width: 220px;
+    flex-shrink: 0;
+    padding: $space-8 $space-4;
+  }
+}
+
+.step-area {
+  flex: 1;
+  padding: $space-6 $space-4 48px;
+
+  @media (min-width: 768px) {
+    padding: $space-8;
+  }
+}

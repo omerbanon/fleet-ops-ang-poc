@@ -1,0 +1,176 @@
+<section class="step">
+  <h1 class="step-title">שלבי המשימה</h1>
+  <p class="step-subtitle">הוסף שלבים לפי סדר ההתקדמות</p>
+
+  <div class="layout">
+    <div class="stages-panel">
+      @for (stage of missionData.stages; track stage.order; let i = $index) {
+        <article class="stage-card" [class.expanded]="expanded(i)">
+          <header class="stage-header" (click)="toggleExpand(i)">
+            <div class="stage-title">
+              <span class="stage-name">{{ stage.name }}</span>
+              <span class="stage-action">{{ stageActionLabels[stage.action] || '—' }}</span>
+            </div>
+            <div class="stage-times">
+              @if (stage.departureTime) { <span>{{ stage.departureTime }}</span> }
+              @if (stage.arrivalTime) { <span> ← {{ stage.arrivalTime }}</span> }
+            </div>
+            @if (missionData.stages.length > 1) {
+              <button type="button" class="remove-btn" (click)="removeStage(i); $event.stopPropagation()" aria-label="הסר שלב">×</button>
+            }
+          </header>
+
+          @if (expanded(i)) {
+            <div class="stage-body">
+              <div class="field">
+                <label>פעולה</label>
+                <ion-select
+                  fill="outline"
+                  interface="popover"
+                  [value]="stage.action"
+                  (ionChange)="onActionChange(i, $any($event).detail.value)"
+                >
+                  @for (a of stageActions; track a.value) {
+                    <ion-select-option [value]="a.value">{{ a.label }}</ion-select-option>
+                  }
+                </ion-select>
+              </div>
+
+              <div class="field-row">
+                <div class="field">
+                  <label>מוצא</label>
+                  <ion-input
+                    fill="outline"
+                    [value]="stage.origin"
+                    (ionInput)="updateStage(i, { origin: $any($event.target).value })"
+                  />
+                </div>
+                <div class="field">
+                  <label>יעד</label>
+                  <ion-input
+                    fill="outline"
+                    [value]="stage.destination"
+                    (ionInput)="updateStage(i, { destination: $any($event.target).value })"
+                  />
+                </div>
+              </div>
+
+              <div class="field">
+                <label>ציוד/מטען</label>
+                <ion-input
+                  fill="outline"
+                  placeholder="מזרונים, שמיכות"
+                  [value]="stage.cargo"
+                  (ionInput)="updateStage(i, { cargo: $any($event.target).value })"
+                />
+              </div>
+
+              <div class="field-row">
+                <div class="field">
+                  <label>איש קשר</label>
+                  <ion-input
+                    fill="outline"
+                    [value]="stage.contactName"
+                    (ionInput)="updateStage(i, { contactName: $any($event.target).value })"
+                  />
+                </div>
+                <div class="field">
+                  <label>טלפון איש קשר</label>
+                  <ion-input
+                    fill="outline"
+                    type="tel"
+                    dir="ltr"
+                    [value]="stage.contactPhone"
+                    (ionInput)="updateStage(i, { contactPhone: $any($event.target).value })"
+                  />
+                </div>
+              </div>
+
+              <div class="field-row">
+                <div class="field">
+                  <label>שעת יציאה</label>
+                  <ion-input
+                    fill="outline"
+                    type="time"
+                    [value]="stage.departureTime"
+                    (ionInput)="updateStage(i, { departureTime: $any($event.target).value })"
+                  />
+                </div>
+                <div class="field">
+                  <label>שעת הגעה</label>
+                  <ion-input
+                    fill="outline"
+                    type="time"
+                    [value]="stage.arrivalTime"
+                    (ionInput)="updateStage(i, { arrivalTime: $any($event.target).value })"
+                  />
+                </div>
+              </div>
+
+              <div class="field-row">
+                <div class="field">
+                  <label>המתנה לפני שלב הבא (דקות)</label>
+                  <ion-input
+                    fill="outline"
+                    type="number"
+                    [value]="stage.bufferMinutes"
+                    (ionInput)="updateStage(i, { bufferMinutes: +$any($event.target).value || 0 })"
+                  />
+                </div>
+                <div class="field buffer-suggest">
+                  <label>&nbsp;</label>
+                  <ion-button fill="outline" size="small" (click)="resetBuffer(i)">
+                    הצע מהפעולה ({{ bufferLabel(stage.action) }} ד׳)
+                  </ion-button>
+                </div>
+              </div>
+
+              <div class="routes-stub">
+                <div class="route-box">
+                  <span class="route-label">מסלול ראשי</span>
+                  <span class="route-placeholder">מסלול יחושב לאחר חיבור מפות</span>
+                </div>
+                <div class="route-box">
+                  <span class="route-label">מסלול חלופי</span>
+                  <span class="route-placeholder">מסלול יחושב לאחר חיבור מפות</span>
+                </div>
+              </div>
+            </div>
+          }
+        </article>
+      }
+
+      <button type="button" class="add-stage" (click)="addStage()">+ הוספת שלב</button>
+
+      <button type="button" class="show-map" (click)="toggleMapModal()">צפה במפה</button>
+    </div>
+
+    <aside class="map-panel">
+      <div class="map-zero-state">
+        <svg viewBox="0 0 100 100" width="80" height="80" aria-hidden="true">
+          <rect x="10" y="40" width="55" height="25" rx="3" fill="none" stroke="#9CA3AF" stroke-width="2"/>
+          <rect x="60" y="48" width="25" height="17" rx="3" fill="none" stroke="#9CA3AF" stroke-width="2"/>
+          <circle cx="25" cy="70" r="6" fill="none" stroke="#9CA3AF" stroke-width="2"/>
+          <circle cx="75" cy="70" r="6" fill="none" stroke="#9CA3AF" stroke-width="2"/>
+        </svg>
+        <p class="zero-text">המפה תוצג לאחר חיבור מסלולים</p>
+      </div>
+    </aside>
+  </div>
+
+  @if (showMapModal()) {
+    <div class="map-modal" (click)="toggleMapModal()">
+      <div class="map-modal-content" (click)="$event.stopPropagation()">
+        <button type="button" class="close-modal" (click)="toggleMapModal()">×</button>
+        <div class="map-zero-state">
+          <p class="zero-text">המפה תוצג לאחר חיבור מסלולים</p>
+        </div>
+      </div>
+    </div>
+  }
+
+  <footer class="sticky-nav">
+    <ion-button fill="outline" (click)="onBack()">הקודם</ion-button>
+    <ion-button [disabled]="!canProceed()" (click)="onSubmit()">המשך</ion-button>
+  </footer>
+</section>

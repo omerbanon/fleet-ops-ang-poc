@@ -1,0 +1,16 @@
+<nav class="horizontal-stepper">
+  @for (s of steps; track s.num; let i = $index) {
+    <button
+      type="button"
+      class="step"
+      [class.active]="s.num === currentStep"
+      [class.complete]="completedSteps.includes(s.num) && s.num !== currentStep"
+      [disabled]="!isClickable(s.num)"
+      (click)="onClick(s.num)"
+    >
+      <span class="dot">{{ i + 1 }}</span>
+      <span class="label">{{ s.label }}</span>
+    </button>
+    @if (!$last) { <span class="connector"></span> }
+  }
+</nav>

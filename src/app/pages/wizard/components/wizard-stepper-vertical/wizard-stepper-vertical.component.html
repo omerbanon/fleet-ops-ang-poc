@@ -1,0 +1,21 @@
+<nav class="vertical-stepper">
+  @for (phase of phases; track phase.index) {
+    <button
+      type="button"
+      class="phase"
+      [class.active]="isPhaseActive(phase)"
+      [class.complete]="isPhaseComplete(phase) && !isPhaseActive(phase)"
+      [disabled]="!isPhaseClickable(phase)"
+      (click)="onPhaseClick(phase)"
+    >
+      <span class="dot">
+        @if (isPhaseComplete(phase)) {
+          <span class="check">✓</span>
+        } @else {
+          <span class="num">{{ phase.index + 1 }}</span>
+        }
+      </span>
+      <span class="label">{{ phase.label }}</span>
+    </button>
+  }
+</nav>

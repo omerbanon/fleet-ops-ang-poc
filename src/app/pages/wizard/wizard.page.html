@@ -1,0 +1,90 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ state().editingMissionId ? 'עריכת משימה' : 'משימה חדשה' }}</ion-title>
+    <ion-button slot="end" fill="clear" (click)="onCancel()" aria-label="ביטול">
+      <ion-icon name="close-outline" slot="icon-only" />
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="wizard-content">
+  <div class="wizard-layout" [class.with-vertical-stepper]="showVerticalStepper()">
+
+    @if (showVerticalStepper()) {
+      <aside class="stepper-rail">
+        <app-wizard-stepper-vertical
+          [currentStep]="currentStep()"
+          [completedSteps]="state().completedSteps"
+          (stepClick)="onJumpToStep($event)"
+        />
+      </aside>
+    }
+
+    <main class="step-area">
+      @if (showHorizontalStepper()) {
+        <app-wizard-stepper-horizontal
+          [currentStep]="currentStep()"
+          [completedSteps]="state().completedSteps"
+          (stepClick)="onJumpToStep($event)"
+        />
+      }
+
+      @switch (currentStep()) {
+        @case (1) {
+          <app-step1-basics
+            [missionData]="state().missionData"
+            [people]="people()"
+            (next)="onNext()"
+          />
+        }
+        @case (2) {
+          <app-step2-risks
+            [missionData]="state().missionData"
+            (next)="onNext()"
+            (back)="onBack()"
+          />
+        }
+        @case (3) {
+          <app-step3-trucks-crew
+            [missionData]="state().missionData"
+            [trucks]="trucks()"
+            [people]="people()"
+            [missions]="missions()"
+            (next)="onNext()"
+            (back)="onBack()"
+          />
+        }
+        @case (4) {
+          <app-step4-stages
+            [missionData]="state().missionData"
+            (next)="onNext()"
+            (back)="onBack()"
+          />
+        }
+        @case (5) {
+          <app-step5-review
+            [missionData]="state().missionData"
+            [trucks]="trucks()"
+            [people]="people()"
+            (next)="onNext()"
+            (back)="onBack()"
+            (jumpTo)="onJumpToStep($event)"
+          />
+        }
+        @case (6) {
+          <app-step6-generate
+            [missionData]="state().missionData"
+            [originalMissionData]="state().originalMissionData"
+            [isEditingScheduledOrActive]="isEditingScheduledOrActive()"
+            [editingMissionId]="state().editingMissionId"
+            [trucks]="trucks()"
+            [people]="people()"
+            [teamId]="selectedTeam()?.id ?? 'team-001'"
+            (back)="onBack()"
+            (cancel)="onCancel()"
+          />
+        }
+      }
+    </main>
+  </div>
+</ion-content>

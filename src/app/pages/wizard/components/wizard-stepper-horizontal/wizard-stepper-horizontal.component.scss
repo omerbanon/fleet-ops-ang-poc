@@ -1,0 +1,53 @@
+@use '../../../../../styles/variables' as *;
+
+.horizontal-stepper {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  margin-bottom: $space-6;
+  padding: $space-3 0;
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  color: $gray-500;
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  &.active { color: $primary; .dot { background: $primary; color: white; } }
+  &.complete .dot { background: $primary; color: white; }
+}
+
+.dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: $gray-200;
+  color: $gray-600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.label {
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.connector {
+  flex: 1;
+  height: 2px;
+  background: $gray-200;
+  max-width: 60px;
+}

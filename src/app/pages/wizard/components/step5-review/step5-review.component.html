@@ -1,0 +1,59 @@
+<section class="step">
+  <h1 class="step-title">סיכום</h1>
+  <p class="step-subtitle">בדוק את כל הפרטים לפני המשך להפקה</p>
+
+  <article class="section">
+    <header>
+      <h2>פרטי המשימה</h2>
+      <button type="button" class="edit-link" (click)="onEdit(1)">ערוך</button>
+    </header>
+    <dl>
+      <dt>שם</dt><dd>{{ missionData.missionBasics.name || '—' }}</dd>
+      <dt>תאריך</dt><dd>{{ formatDate(missionData.missionBasics.date) }}</dd>
+      <dt>מפקד</dt><dd>{{ missionData.missionBasics.commander?.name || '—' }}</dd>
+      <dt>סוג</dt><dd>{{ missionTypeLabels[missionData.missionBasics.type] || '—' }}</dd>
+    </dl>
+  </article>
+
+  <article class="section">
+    <header>
+      <h2>רכבים וצוותים</h2>
+      <button type="button" class="edit-link" (click)="onEdit(3)">ערוך</button>
+    </header>
+    <p class="subtitle">{{ truckCount() }} רכבים | {{ peopleCount() }} אנשים</p>
+    <div class="truck-list">
+      @for (a of missionData.truckAssignments; track a.truckId) {
+        <div class="truck-row">
+          <div class="truck-label">{{ truckLabelById(a.truckId) }}</div>
+          <div class="truck-crew">
+            <span>נהג: {{ personName(a.driver) }}</span>
+            @for (cd of a.coDrivers; track $index) {
+              @if (cd) { <span>ספק: {{ personName(cd) }}</span> }
+            }
+          </div>
+        </div>
+      }
+    </div>
+  </article>
+
+  <article class="section">
+    <header>
+      <h2>שלבי המשימה</h2>
+      <button type="button" class="edit-link" (click)="onEdit(4)">ערוך</button>
+    </header>
+    <ol class="stages-list">
+      @for (s of missionData.stages; track s.order) {
+        <li>
+          <span class="stage-action">{{ stageActionLabels[s.action] || s.action }}</span>
+          <span class="stage-route">{{ s.origin || '—' }} ← {{ s.destination || '—' }}</span>
+          <span class="stage-time">{{ s.departureTime || '—' }} - {{ s.arrivalTime || '—' }}</span>
+        </li>
+      }
+    </ol>
+  </article>
+
+  <footer class="sticky-nav">
+    <ion-button fill="outline" (click)="onBack()">הקודם</ion-button>
+    <ion-button (click)="onSubmit()">הכל נכון — המשך להפקה</ion-button>
+  </footer>
+</section>

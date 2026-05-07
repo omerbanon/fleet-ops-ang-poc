@@ -1,0 +1,60 @@
+@use '../../../../../styles/variables' as *;
+
+.vertical-stepper {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+  position: sticky;
+  top: $space-4;
+}
+
+.phase {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  background: transparent;
+  border: 0;
+  padding: $space-2 $space-3;
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: start;
+  color: $gray-500;
+  transition: background 0.15s ease;
+
+  &:hover:not(:disabled) {
+    background: $gray-100;
+  }
+
+  &.active {
+    color: $primary;
+    background: rgba(45, 95, 63, 0.06);
+
+    .dot { background: $primary; color: white; }
+  }
+
+  &.complete .dot { background: $primary; color: white; }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}
+
+.dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: $gray-200;
+  color: $gray-600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.label {
+  font-size: 0.9375rem;
+  font-weight: 600;
+}

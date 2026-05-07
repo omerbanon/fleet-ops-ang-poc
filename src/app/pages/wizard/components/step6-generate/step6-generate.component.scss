@@ -1,0 +1,172 @@
+@use '../../../../../styles/variables' as *;
+
+.step { max-width: 720px; }
+
+.step-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: $gray-900;
+  margin: 0 0 $space-1;
+}
+
+.step-subtitle {
+  color: $gray-500;
+  margin: 0 0 $space-6;
+}
+
+.diff-card {
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  border-radius: 12px;
+  padding: $space-3 $space-4;
+  margin-bottom: $space-4;
+
+  h2 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #B45309;
+    margin: 0 0 $space-2;
+  }
+
+  ul {
+    margin: 0;
+    padding-inline-start: $space-5;
+    color: #92400E;
+  }
+}
+
+.error-banner {
+  background: #FEF2F2;
+  border: 1px solid #FECACA;
+  color: $danger;
+  padding: $space-3 $space-4;
+  border-radius: 10px;
+  margin-bottom: $space-4;
+  font-size: 0.875rem;
+}
+
+.message-box {
+  margin: $space-4 0;
+  background: white;
+  border: 1px solid $card-border;
+  border-radius: 12px;
+  padding: $space-4;
+
+  pre {
+    margin: 0 0 $space-3;
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-family: inherit;
+    font-size: 0.9375rem;
+    color: $gray-800;
+    direction: rtl;
+  }
+
+  ion-button { --border-radius: 8px; }
+}
+
+.docx-stub, .tokens-stub {
+  background: white;
+  border: 1px solid $card-border;
+  border-radius: 12px;
+  padding: $space-4;
+  margin-bottom: $space-3;
+
+  h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: $gray-900;
+    margin: 0 0 $space-2;
+  }
+
+  .hint {
+    color: $gray-500;
+    font-size: 0.875rem;
+    margin: $space-2 0 0;
+  }
+}
+
+.loading-card {
+  background: white;
+  border: 1px solid $card-border;
+  border-radius: 12px;
+  padding: $space-8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-3;
+  color: $gray-700;
+}
+
+.success-card {
+  background: white;
+  border: 1px solid $card-border;
+  border-radius: 12px;
+  padding: $space-6;
+  text-align: center;
+
+  h2 {
+    color: $primary;
+    margin: 0 0 $space-4;
+  }
+
+  h3 {
+    text-align: start;
+    margin: $space-6 0 $space-3;
+    font-size: 1rem;
+  }
+}
+
+.token-list {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  margin-bottom: $space-6;
+}
+
+.token-row {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  padding: $space-2 $space-3;
+  background: $gray-50;
+  border-radius: 8px;
+  text-align: start;
+}
+
+.token-vehicle {
+  font-weight: 700;
+  color: $gray-900;
+  flex-shrink: 0;
+  min-width: 80px;
+}
+
+.token-url {
+  flex: 1;
+  font-size: 0.8125rem;
+  color: $gray-600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.whatsapp-btn {
+  background: #25D366;
+  color: white;
+  border: 0;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover { background: #1FB855; }
+}
+
+.sticky-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: $space-3;
+  margin-top: $space-8;
+  ion-button { --border-radius: 8px; min-width: 120px; }
+}

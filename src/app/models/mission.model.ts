@@ -36,7 +36,7 @@ export interface MissionStage {
   mission_id: string;
   stage_order: number;
   stage_name: string;
-  action: 'loading' | 'unloading' | 'return' | 'transfer';
+  action: 'departure' | 'loading' | 'unloading' | 'return' | 'transfer' | 'maintenance';
   origin: string;
   destination: string;
   equipment_cargo: string | null;
@@ -132,10 +132,12 @@ export function getTruckType(mp: MissionPersonnel): string {
 export const HEB_LETTERS = ['\u05D0\u05F3', '\u05D1\u05F3', '\u05D2\u05F3', '\u05D3\u05F3', '\u05D4\u05F3', '\u05D5\u05F3', '\u05D6\u05F3', '\u05D7\u05F3', '\u05D8\u05F3', '\u05D9\u05F3'];
 
 export const ACTION_LABELS: Record<string, string> = {
+  departure: '\u05D9\u05E6\u05D9\u05D0\u05D4/\u05E0\u05E1\u05D9\u05E2\u05D4',
   loading: '\u05D4\u05E2\u05DE\u05E1\u05D4',
   unloading: '\u05E4\u05E8\u05D9\u05E7\u05D4',
   return: '\u05D7\u05D6\u05D5\u05E8',
   transfer: '\u05D4\u05E2\u05D1\u05E8\u05D4',
+  maintenance: '\u05D0\u05D7\u05D6\u05E7\u05D4',
 };
 
 export const STATUS_LABELS: Record<MissionStatus, string> = {

@@ -1,0 +1,185 @@
+<section class="step">
+  <h1 class="step-title">רכבים וצוותים</h1>
+  <p class="step-subtitle">בחר רכבים ושבץ נהג + ספקים לכל אחד</p>
+
+  @if (dayCommitments().trucks > 0 || dayCommitments().people > 0) {
+    <div class="banner banner-info">
+      {{ dayCommitments().people }} אנשי צוות ו-{{ dayCommitments().trucks }} רכבים כבר משובצים למשימות ביום זה
+    </div>
+  }
+
+  <div class="staffing-row">
+    <span class="pill">{{ truckCount() }}/{{ trucks.length }} רכבים נבחרו</span>
+    <span class="pill">{{ assignedPeopleCount() }} אנשי צוות שובצו</span>
+    @if (isLowStaffing()) {
+      <span class="warn">שיבוץ צוות חלקי — בדוק לפני המשך</span>
+    }
+  </div>
+
+  <div class="search-bar">
+    <ion-input
+      fill="outline"
+      placeholder="חפש רכב או איש צוות"
+      [value]="search()"
+      (ionInput)="search.set($any($event.target).value)"
+    />
+  </div>
+
+  <h2 class="section-title">רכבים</h2>
+  <div class="truck-list">
+    @for (truck of filteredTrucks(); track truck.id) {
+      @let conflicts = conflictMissionsFor(truck.id);
+      <article class="truck-row" [class.disabled]="truck.status !== 'operational'">
+        <div class="truck-info">
+          <div class="truck-id">{{ truck.vehicle_id }}</div>
+          <div class="truck-meta">
+            <span class="truck-type">{{ truck.type }}</span>
+            @if (truck.status !== 'operational') {
+              <span class="status-badge status-{{ truck.status }}">{{ truckStatusLabels[truck.status] }}</span>
+            }
+            @if (conflicts.length > 0) {
+              <span class="conflict-badge">משובץ ב-{{ conflicts.join(', ') }}</span>
+            }
+          </div>
+        </div>
+        <ion-toggle
+          [checked]="isSelected(truck.id)"
+          [disabled]="truck.status !== 'operational'"
+          (ionChange)="toggleTruck(truck)"
+          aria-label="בחר רכב"
+        />
+      </article>
+    }
+
+    @for (ct of customTrucks(); track ct.id) {
+      <article class="truck-row custom">
+        <div class="truck-info">
+          <div class="truck-id">{{ ct.vehicleId }} <span class="custom-tag">מותאם אישית</span></div>
+          <div class="truck-meta"><span class="truck-type">{{ ct.type }}</span></div>
+        </div>
+        <ion-toggle [checked]="true" disabled aria-label="רכב נבחר" />
+      </article>
+    }
+  </div>
+
+  @if (showCustomTruckForm()) {
+    <div class="inline-form">
+      <ion-input fill="outline" placeholder="מספר רכב"
+        [value]="customTruckForm().vehicleId"
+        (ionInput)="customTruckForm.set({ vehicleId: $any($event.target).value, type: customTruckForm().type })" />
+      <ion-input fill="outline" placeholder="סוג רכב"
+        [value]="customTruckForm().type"
+        (ionInput)="customTruckForm.set({ vehicleId: customTruckForm().vehicleId, type: $any($event.target).value })" />
+      <div class="inline-form-actions">
+        <ion-button fill="outline" size="small" (click)="toggleCustomTruckForm()">בטל</ion-button>
+        <ion-button size="small" (click)="addCustomTruck()">הוסף</ion-button>
+      </div>
+    </div>
+  } @else {
+    <button type="button" class="add-custom" (click)="toggleCustomTruckForm()">+ הוסף רכב מותאם אישית</button>
+  }
+
+  @if (truckCount() > 0) {
+    <h2 class="section-title">שיבוץ צוות</h2>
+    <div class="crew-cards">
+      @for (a of missionData.truckAssignments; track a.truckId) {
+        @let label = truckLabelById(a.truckId);
+        <article class="crew-card">
+          <header class="crew-header">
+            <span class="crew-vehicle">{{ label.vehicleId }}</span>
+            <span class="crew-type">{{ label.type }}</span>
+          </header>
+
+          <div class="crew-row">
+            <label>נהג</label>
+            <ion-select
+              fill="outline"
+              placeholder="בחר נהג"
+              interface="popover"
+              [value]="a.driver ?? ''"
+              (ionChange)="setDriver(a.truckId, $any($event).detail.value || null)"
+            >
+              <ion-select-option [value]="''">— ללא —</ion-select-option>
+              @for (opt of driverOptions(a.truckId); track opt.id) {
+                <ion-select-option [value]="opt.id">
+                  {{ opt.full_name }}@if (opt.conflict?.length) { — (משובץ במשימה: {{ opt.conflict!.join(', ') }}) }
+                </ion-select-option>
+              }
+            </ion-select>
+            @if (a.driver) {
+              <div class="flags">
+                <ion-toggle
+                  [checked]="hasWeapon(a.truckId, a.driver)"
+                  (ionChange)="toggleWeapon(a.truckId, a.driver, $any($event).detail.checked)"
+                >נשק?</ion-toggle>
+                <ion-toggle
+                  [checked]="hasVest(a.truckId, a.driver)"
+                  (ionChange)="toggleVest(a.truckId, a.driver, $any($event).detail.checked)"
+                >שכפצ"ים וקסדות?</ion-toggle>
+              </div>
+            }
+          </div>
+
+          @for (cd of a.coDrivers; track $index; let i = $index) {
+            <div class="crew-row">
+              <label>ספק {{ i + 1 }}</label>
+              <ion-select
+                fill="outline"
+                placeholder="בחר ספק (אופציונלי)"
+                interface="popover"
+                [value]="cd ?? ''"
+                (ionChange)="setSupplier(a.truckId, i, $any($event).detail.value || null)"
+              >
+                <ion-select-option [value]="''">— ללא —</ion-select-option>
+                @for (opt of supplierOptions(a.truckId, i); track opt.id) {
+                  <ion-select-option [value]="opt.id">
+                    {{ opt.full_name }}@if (opt.conflict?.length) { — (משובץ במשימה: {{ opt.conflict!.join(', ') }}) }
+                  </ion-select-option>
+                }
+              </ion-select>
+              @if (cd) {
+                <div class="flags">
+                  <ion-toggle
+                    [checked]="hasWeapon(a.truckId, cd)"
+                    (ionChange)="toggleWeapon(a.truckId, cd, $any($event).detail.checked)"
+                  >נשק?</ion-toggle>
+                  <ion-toggle
+                    [checked]="hasVest(a.truckId, cd)"
+                    (ionChange)="toggleVest(a.truckId, cd, $any($event).detail.checked)"
+                  >שכפצ"ים וקסדות?</ion-toggle>
+                </div>
+              }
+              @if (a.coDrivers.length > 1) {
+                <ion-button fill="clear" size="small" (click)="removeSupplierSlot(a.truckId, i)">הסר</ion-button>
+              }
+            </div>
+          }
+
+          <button type="button" class="add-slot" (click)="addSupplierSlot(a.truckId)">+ הוסף ספק</button>
+
+          @if (showCustomPersonFormFor() === a.truckId) {
+            <div class="inline-form">
+              <ion-input fill="outline" placeholder="שם מלא"
+                [value]="customPersonForm().fullName"
+                (ionInput)="customPersonForm.set({ fullName: $any($event.target).value, phone: customPersonForm().phone })" />
+              <ion-input fill="outline" type="tel" dir="ltr" placeholder="טלפון (אופציונלי)"
+                [value]="customPersonForm().phone"
+                (ionInput)="customPersonForm.set({ fullName: customPersonForm().fullName, phone: $any($event.target).value })" />
+              <div class="inline-form-actions">
+                <ion-button fill="outline" size="small" (click)="toggleCustomPersonForm(a.truckId)">בטל</ion-button>
+                <ion-button size="small" (click)="addCustomPerson(a.truckId)">הוסף</ion-button>
+              </div>
+            </div>
+          } @else {
+            <button type="button" class="add-slot" (click)="toggleCustomPersonForm(a.truckId)">+ הוסף איש צוות מותאם אישית</button>
+          }
+        </article>
+      }
+    </div>
+  }
+
+  <footer class="sticky-nav">
+    <ion-button fill="outline" (click)="onBack()">הקודם</ion-button>
+    <ion-button [disabled]="!canProceed()" (click)="onSubmit()">{{ truckCountText() }}</ion-button>
+  </footer>
+</section>
