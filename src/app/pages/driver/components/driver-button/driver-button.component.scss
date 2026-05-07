@@ -1,0 +1,48 @@
+@use '../../../../../styles/variables' as *;
+
+.driver-button-bar {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-top: 1px solid $card-border;
+  padding: $space-3 $space-4;
+  padding-bottom: calc($space-3 + env(safe-area-inset-bottom));
+  z-index: 100;
+}
+
+.action-btn {
+  width: 100%;
+  background: $primary;
+  color: white;
+  border: 0;
+  padding: $space-4;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-2;
+  cursor: pointer;
+  transition: background 0.15s, opacity 0.15s;
+
+  &:hover:not(:disabled) { background: $primary-dark; }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &.success {
+    background: #10B981;
+    opacity: 1;
+  }
+
+  ion-spinner {
+    width: 18px;
+    height: 18px;
+  }
+}

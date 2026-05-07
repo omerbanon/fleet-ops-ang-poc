@@ -1,0 +1,173 @@
+@use '../../../../../styles/variables' as *;
+
+:host {
+  display: block;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: $gray-50;
+}
+
+.state-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: $space-6;
+  text-align: center;
+  gap: $space-3;
+
+  ion-spinner {
+    width: 40px;
+    height: 40px;
+  }
+
+  h2 {
+    font-size: 1.375rem;
+    font-weight: 700;
+    color: $gray-900;
+    margin: 0;
+  }
+
+  p {
+    color: $gray-600;
+    margin: 0;
+  }
+}
+
+.state-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: white;
+
+  &.success { background: #10B981; }
+  &.error { background: $danger; }
+  &.warn { background: #F59E0B; }
+}
+
+.driver-screen {
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: 100px; /* leave room for fixed bottom button */
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+}
+
+.mission-header {
+  padding: $space-4 $space-5;
+  background: white;
+  border-bottom: 1px solid $card-border;
+
+  h1 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: $gray-900;
+    margin: 0 0 $space-2;
+  }
+}
+
+.meta-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 0.875rem;
+  color: $gray-600;
+}
+
+.commander {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  flex-wrap: wrap;
+}
+
+.phone-link {
+  color: $primary;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.truck-info {
+  background: white;
+  padding: $space-3 $space-5;
+  border-bottom: 1px solid $card-border;
+
+  .truck-label {
+    display: inline-block;
+    font-weight: 700;
+    color: $gray-900;
+    margin-bottom: $space-1;
+  }
+
+  .crew-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-size: 0.875rem;
+    color: $gray-700;
+  }
+
+  .role-chip {
+    display: inline-block;
+    margin-inline-start: $space-1;
+    padding: 0 6px;
+    background: $gray-100;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    color: $gray-600;
+  }
+}
+
+.card-region {
+  position: relative;
+  padding: 0 $space-4;
+  touch-action: pan-y;
+}
+
+.nav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: white;
+  border: 1px solid $card-border;
+  box-shadow: $card-shadow;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: $gray-700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+
+  &.nav-left { left: $space-2; }
+  &.nav-right { right: $space-2; }
+
+  &:hover {
+    background: $gray-50;
+  }
+}
+
+.inline-error {
+  margin: $space-3 $space-4 0;
+  padding: $space-3 $space-4;
+  background: #FEF2F2;
+  border: 1px solid #FECACA;
+  color: $danger;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  text-align: center;
+}

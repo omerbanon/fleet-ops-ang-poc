@@ -1,0 +1,16 @@
+@let resolved = resolveButton();
+
+<div class="driver-button-bar">
+  <button
+    type="button"
+    class="action-btn"
+    [class.success]="resolved.success"
+    [disabled]="resolved.disabled"
+    (click)="onClick()"
+  >
+    @if (advancing) {
+      <ion-spinner name="crescent" />
+    }
+    <span>{{ resolved.label }}</span>
+  </button>
+</div>

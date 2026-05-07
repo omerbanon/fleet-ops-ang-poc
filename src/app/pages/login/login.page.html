@@ -23,15 +23,24 @@
 
         <div class="field">
           <label for="password">סיסמה</label>
-          <ion-input
-            id="password"
-            type="password"
-            dir="ltr"
-            formControlName="password"
-            fill="outline"
-          >
-            <ion-input-password-toggle slot="end" />
-          </ion-input>
+          <div class="password-row">
+            <ion-input
+              id="password"
+              [type]="showPassword() ? 'text' : 'password'"
+              dir="ltr"
+              formControlName="password"
+              fill="outline"
+            />
+            <ion-button
+              type="button"
+              fill="clear"
+              size="small"
+              class="password-toggle"
+              (click)="togglePasswordVisibility()"
+            >
+              {{ showPassword() ? 'הסתר' : 'הצג' }}
+            </ion-button>
+          </div>
         </div>
 
         <ion-button

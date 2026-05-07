@@ -1,0 +1,48 @@
+<article class="stage-card">
+  <header class="card-header">
+    <span class="heb-letter">{{ hebLetter(stageIndex) }}</span>
+    <span class="action-label">{{ actionLabel(stage.action) || stage.action }}</span>
+    <span class="counter">({{ stageIndex + 1 }}/{{ totalStages }})</span>
+  </header>
+
+  <div class="route">
+    <span class="origin">{{ stage.origin || '—' }}</span>
+    <span class="arrow">←</span>
+    <span class="destination">{{ stage.destination || '—' }}</span>
+  </div>
+
+  <div class="time-row">
+    <span class="time">{{ stage.departure_time || '—' }} – {{ stage.arrival_time || '—' }}</span>
+    @if (stage.buffer_minutes && stage.buffer_minutes > 0) {
+      <span class="buffer">+ {{ stage.buffer_minutes }} דק' בנקודה</span>
+    }
+  </div>
+
+  @if (stage.equipment_cargo) {
+    <div class="info-row">
+      <span class="info-label">מטען:</span>
+      <span class="info-value">{{ stage.equipment_cargo }}</span>
+    </div>
+  }
+
+  @if (stage.contact_person_name) {
+    <div class="info-row">
+      <span class="info-label">איש קשר:</span>
+      <span class="info-value">{{ stage.contact_person_name }}</span>
+      @if (stage.contact_person_phone) {
+        <a class="phone-link" [attr.href]="'tel:' + stage.contact_person_phone" dir="ltr">{{ stage.contact_person_phone }}</a>
+      }
+    </div>
+  }
+
+  @if (stage.routes && stage.routes.length > 0 && stage.routes[0].road_number) {
+    <div class="info-row">
+      <span class="info-label">מסלול:</span>
+      <span class="info-value">{{ stage.routes[0].road_number }}</span>
+    </div>
+  }
+
+  @if (stage.maps_url) {
+    <button type="button" class="navigate-btn" (click)="onNavigate()">נווט</button>
+  }
+</article>

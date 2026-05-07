@@ -1,0 +1,93 @@
+@use '../../../../../styles/variables' as *;
+
+.stage-card {
+  background: white;
+  border: 1px solid $card-border;
+  border-radius: $card-radius;
+  box-shadow: $card-shadow;
+  padding: $space-5;
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+}
+
+.card-header {
+  display: flex;
+  align-items: baseline;
+  gap: $space-2;
+  padding-bottom: $space-3;
+  border-bottom: 1px solid $gray-100;
+}
+
+.heb-letter {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: $primary;
+}
+
+.action-label {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: $gray-900;
+  flex: 1;
+}
+
+.counter {
+  font-size: 0.875rem;
+  color: $gray-500;
+}
+
+.route {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: $gray-900;
+  flex-wrap: wrap;
+
+  .arrow { color: $gray-400; font-weight: 400; }
+}
+
+.time-row {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  flex-wrap: wrap;
+  font-size: 0.9375rem;
+  color: $gray-700;
+
+  .buffer { color: $gray-500; font-size: 0.875rem; }
+}
+
+.info-row {
+  display: flex;
+  gap: $space-2;
+  align-items: baseline;
+  flex-wrap: wrap;
+  font-size: 0.9375rem;
+
+  .info-label { color: $gray-500; flex-shrink: 0; }
+  .info-value { color: $gray-800; }
+}
+
+.phone-link {
+  color: $primary;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.navigate-btn {
+  margin-top: $space-3;
+  background: $primary;
+  color: white;
+  border: 0;
+  padding: $space-3 $space-5;
+  border-radius: 8px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  align-self: flex-start;
+
+  &:hover { background: $primary-dark; }
+}
