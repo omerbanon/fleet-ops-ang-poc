@@ -27,6 +27,12 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
+    path: 'admin/secret',
+    loadComponent: () =>
+      import('./pages/admin-secret/admin-secret.page').then(m => m.AdminSecretPage),
+    canActivate: [authGuard],
+  },
+  {
     path: '**',
     redirectTo: '',
   },

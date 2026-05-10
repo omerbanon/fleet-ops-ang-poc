@@ -1,14 +1,14 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { IonContent, IonButton, IonSpinner, IonInput, IonInputPasswordToggle } from '@ionic/angular/standalone';
+import { IonContent, IonButton, IonSpinner, IonInput } from '@ionic/angular/standalone';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [
-    IonContent, IonButton, IonSpinner, IonInput, IonInputPasswordToggle,
+    IonContent, IonButton, IonSpinner, IonInput,
     ReactiveFormsModule,
   ],
   templateUrl: './login.page.html',
@@ -20,6 +20,11 @@ export class LoginPage {
 
   submitting = signal(false);
   errorMessage = signal<string | null>(null);
+  showPassword = signal(false);
+
+  togglePasswordVisibility(): void {
+    this.showPassword.update(v => !v);
+  }
 
   form = new FormGroup({
     email: new FormControl('', {
