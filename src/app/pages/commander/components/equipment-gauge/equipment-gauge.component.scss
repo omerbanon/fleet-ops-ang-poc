@@ -1,0 +1,42 @@
+@use '../../../../../styles/variables' as *;
+
+.gauge {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  width: 140px;
+}
+
+.arc {
+  width: 120px;
+  height: 120px;
+}
+
+.center-label {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translateY(-58%);
+  text-align: center;
+  pointer-events: none;
+}
+
+.pct {
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+.counts {
+  font-size: 0.75rem;
+  color: $gray-500;
+}
+
+.below {
+  margin-top: $space-2;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: $gray-800;
+  text-align: center;
+}

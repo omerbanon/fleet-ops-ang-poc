@@ -1,0 +1,107 @@
+<section class="readiness-section">
+  <header class="section-header">
+    <h2>כוננות כ"א</h2>
+    @if (!isReadOnly) {
+      @if (!editing()) {
+        <ion-button fill="outline" size="small" (click)="enterEdit()">עדכון נתונים</ion-button>
+      } @else {
+        <div class="edit-actions">
+          <ion-button fill="outline" size="small" (click)="cancelEdit()">ביטול</ion-button>
+          <ion-button size="small" [disabled]="saving()" (click)="save()">
+            @if (saving()) { <ion-spinner name="crescent" /> }
+            שמור
+          </ion-button>
+        </div>
+      }
+    }
+  </header>
+
+  @if (errorMessage()) { <div class="error-banner">{{ errorMessage() }}</div> }
+
+  @if (!hasData() && !editing()) {
+    <div class="empty-state">
+      <p>אין נתוני כוננות כ"א לתאריך זה</p>
+      @if (!isReadOnly) {
+        <button type="button" class="link" (click)="enterEdit()">הזן נתונים</button>
+      }
+    </div>
+  } @else {
+    @if (!editing()) {
+      <div class="summary-cards">
+        <div class="card">
+          <div class="card-label">תקן</div>
+          <div class="card-value">{{ totals().auth }}</div>
+        </div>
+        <div class="card">
+          <div class="card-label">מצבה</div>
+          <div class="card-value">{{ totals().manning }}</div>
+        </div>
+        <div class="card">
+          <div class="card-label">התייצבו</div>
+          <div class="card-value">{{ totals().reported }}</div>
+        </div>
+        <div class="card">
+          <div class="card-label">אחוז התייצבות</div>
+          <div class="card-value" dir="ltr">{{ fmtPct(totals().reportedRate) }}</div>
+        </div>
+      </div>
+
+      <div class="chart-wrap">
+        <app-mobilization-chart [reports]="reports" />
+      </div>
+    }
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>יחידה</th>
+            @for (f of fields; track f) { <th>{{ labels[f] }}</th> }
+            <th>% מצבה</th>
+            <th>% תקן</th>
+          </tr>
+        </thead>
+        <tbody>
+          @if (!editing()) {
+            @for (r of viewRows(); track r.id) {
+              <tr>
+                <td>{{ r.team_name }}</td>
+                @for (f of fields; track f) { <td>{{ r[f] }}</td> }
+                <td>
+                  <span class="pct-pill" [style]="pctStyle(pctManning(r))" dir="ltr">{{ fmtPct(pctManning(r)) }}</span>
+                </td>
+                <td>
+                  <span class="pct-pill" [style]="pctStyle(pctAuthorized(r))" dir="ltr">{{ fmtPct(pctAuthorized(r)) }}</span>
+                </td>
+              </tr>
+            }
+            <tr class="totals">
+              <td>סה"כ</td>
+              @for (f of fields; track f) { <td>{{ totalsRow()[f] }}</td> }
+              <td><span class="pct-pill" [style]="pctStyle(totals().reportedRate)" dir="ltr">{{ fmtPct(totals().reportedRate) }}</span></td>
+              <td><span class="pct-pill" [style]="pctStyle(totals().reportedRate)" dir="ltr">{{ fmtPct(totals().reportedRate) }}</span></td>
+            </tr>
+          } @else {
+            @for (row of draft(); track row.team_id) {
+              <tr>
+                <td>{{ row.team_name }}</td>
+                @for (f of fields; track f) {
+                  <td>
+                    <input
+                      type="number"
+                      min="0"
+                      [value]="row.values[f]"
+                      (input)="setDraftValue(row.team_id, f, +$any($event.target).value)"
+                    />
+                  </td>
+                }
+                <td>—</td>
+                <td>—</td>
+              </tr>
+            }
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>
