@@ -1,0 +1,94 @@
+<ion-content class="team-content">
+  @if (team() === null) {
+    <header class="page-header">
+      <div class="header-inner">
+        <h1>יצירת צוות</h1>
+        <a routerLink="/" class="back-link">חזרה</a>
+      </div>
+    </header>
+
+    <main class="page-main">
+      <p class="empty-text">אין לך צוות עדיין. צור צוות חדש כדי להתחיל.</p>
+
+      <form class="create-form" (submit)="$event.preventDefault(); createTeam()">
+        <div class="field">
+          <label for="team-name">שם הצוות</label>
+          <ion-input
+            id="team-name"
+            fill="outline"
+            placeholder="לדוגמה: צוות שיגור צפון"
+            [value]="teamName()"
+            (ionInput)="teamName.set($any($event.target).value)"
+          />
+        </div>
+
+        @if (createError()) { <div class="error-banner">{{ createError() }}</div> }
+
+        <ion-button type="submit" [disabled]="creating() || !teamName().trim()">
+          @if (creating()) { <ion-spinner name="crescent" /> }
+          {{ creating() ? 'יוצר...' : 'צור צוות' }}
+        </ion-button>
+      </form>
+    </main>
+  } @else {
+    <header class="page-header">
+      <div class="header-inner">
+        <div>
+          <h1>{{ team()?.name }}</h1>
+          <p class="subtitle">ניהול צוות</p>
+        </div>
+        <a routerLink="/" class="back-link">חזרה למשימות</a>
+      </div>
+    </header>
+
+    <main class="page-main">
+      @if (isAdmin()) {
+        <section class="invite-card">
+          <h2>הזמנת חבר צוות</h2>
+          <form class="invite-form" (submit)="$event.preventDefault(); invite()">
+            <ion-input
+              type="email"
+              fill="outline"
+              dir="ltr"
+              placeholder="אימייל"
+              [value]="inviteEmail()"
+              (ionInput)="inviteEmail.set($any($event.target).value)"
+            />
+            <ion-button type="submit" [disabled]="inviting() || !inviteEmail().trim()">
+              @if (inviting()) { <ion-spinner name="crescent" /> }
+              {{ inviting() ? 'מוסיף...' : 'הוסף' }}
+            </ion-button>
+          </form>
+          @if (inviteError()) { <div class="error-banner">{{ inviteError() }}</div> }
+          @if (inviteSuccess()) { <div class="success-banner">{{ inviteSuccess() }}</div> }
+        </section>
+      }
+
+      <section class="members-section">
+        <h2>חברי צוות</h2>
+        @if (loadingMembers()) {
+          <div class="loading">טוען...</div>
+        } @else {
+          <ul class="member-list">
+            @for (m of members(); track m.id) {
+              <li class="member-row">
+                <div class="member-left">
+                  <span class="avatar" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                  </span>
+                  <span class="email" dir="ltr">{{ m.email }}</span>
+                  <span class="role-chip" [class.admin]="m.role === 'admin'">{{ roleLabel(m.role) }}</span>
+                </div>
+                @if (isAdmin() && m.user_id !== user()?.id) {
+                  <button type="button" class="remove-btn" (click)="removeMember(m)">הסר</button>
+                }
+              </li>
+            }
+          </ul>
+        }
+      </section>
+    </main>
+  }
+</ion-content>

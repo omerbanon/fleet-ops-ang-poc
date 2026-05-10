@@ -27,6 +27,12 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
+    path: 'team',
+    loadComponent: () =>
+      import('./pages/team/team.page').then(m => m.TeamPage),
+    canActivate: [authGuard],
+  },
+  {
     path: '**',
     redirectTo: '',
   },
