@@ -1,0 +1,17 @@
+<div class="chart">
+  @for (row of rows(); track row.team_name) {
+    <div class="row">
+      <div class="team-name">{{ row.team_name }}</div>
+      <div class="bar-track">
+        <div class="bar-fill" [style.width.%]="row.width" [style.background-color]="row.color">
+          @if (row.showInside) {
+            <span class="pct-inside" dir="ltr">{{ fmtPct(row.pct) }}</span>
+          }
+        </div>
+        @if (!row.showInside) {
+          <span class="pct-outside" dir="ltr">{{ fmtPct(row.pct) }}</span>
+        }
+      </div>
+    </div>
+  }
+</div>

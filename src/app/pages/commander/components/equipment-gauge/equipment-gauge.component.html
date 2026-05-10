@@ -1,0 +1,25 @@
+<div class="gauge">
+  <svg [attr.viewBox]="viewBox" class="arc" [attr.style]="'transform: rotate(' + rotateDeg + 'deg)'">
+    <circle
+      [attr.cx]="cx" [attr.cy]="cy" [attr.r]="r"
+      fill="none"
+      stroke="#E5E7EB"
+      [attr.stroke-width]="strokeWidth"
+      [attr.stroke-dasharray]="bgDashArray"
+      stroke-linecap="round"
+    />
+    <circle
+      [attr.cx]="cx" [attr.cy]="cy" [attr.r]="r"
+      fill="none"
+      [attr.stroke]="color()"
+      [attr.stroke-width]="strokeWidth"
+      [attr.stroke-dasharray]="fgDashArray()"
+      stroke-linecap="round"
+    />
+  </svg>
+  <div class="center-label">
+    <div class="pct" [style.color]="color()">{{ percentLabel() }}</div>
+    <div class="counts">{{ operational }}/{{ authorized }}</div>
+  </div>
+  @if (label) { <div class="below">{{ label }}</div> }
+</div>

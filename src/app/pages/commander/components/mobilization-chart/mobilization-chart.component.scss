@@ -1,0 +1,57 @@
+@use '../../../../../styles/variables' as *;
+
+.chart {
+  max-height: 260px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  padding: $space-2 0;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: $space-3;
+  align-items: center;
+}
+
+.team-name {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: $gray-800;
+  text-align: end;
+}
+
+.bar-track {
+  position: relative;
+  background: $gray-100;
+  height: 24px;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 $space-2;
+  transition: width 400ms ease-out;
+  border-radius: 6px;
+}
+
+.pct-inside {
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.pct-outside {
+  position: absolute;
+  top: 50%;
+  inset-inline-start: calc(var(--w, 0%) + #{$space-2});
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: $gray-700;
+}

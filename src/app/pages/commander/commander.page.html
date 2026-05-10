@@ -1,0 +1,99 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>לוח פיקוד</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="commander-content">
+  @switch (state()) {
+    @case ('denied') {
+      <div class="state-screen">
+        <h2>אין לך הרשאה לצפות בלוח המג״ד</h2>
+      </div>
+    }
+
+    @case ('loading') {
+      <div class="state-screen">
+        <ion-spinner name="crescent" />
+        <p>טוען נתוני מפקד…</p>
+      </div>
+    }
+
+    @case ('error') {
+      <div class="state-screen">
+        <h2>שגיאה בטעינת הנתונים</h2>
+        <ion-button (click)="retry()">נסה שוב</ion-button>
+      </div>
+    }
+
+    @case ('ready') {
+      <div class="page-wrapper">
+        @if (selectedTeamId() === null) {
+          <app-commander-summary
+            [missions]="missions()"
+            [teamTotals]="teamTotals()"
+            [teams]="teams()"
+            (selectTeam)="onSelectTeam($event)"
+          />
+
+          <section class="readiness-block">
+            <header class="readiness-header">
+              <h2>דוח כוננות</h2>
+              <input
+                type="date"
+                class="date-input"
+                [value]="reportDate()"
+                (change)="onReportDateChange($any($event.target).value)"
+              />
+              @if (readinessLoading()) { <ion-spinner name="crescent" /> }
+            </header>
+
+            <app-mobilization-section
+              [reports]="mobilizationReports()"
+              [teams]="teams()"
+              [reportDate]="reportDate()"
+              [isReadOnly]="isReadOnly()"
+              (saved)="fetchReadiness()"
+              (editingChange)="onReadinessEditingChange($event)"
+            />
+
+            <app-equipment-section
+              [reports]="equipmentReports()"
+              [categories]="equipmentCategories()"
+              [teams]="teams()"
+              [reportDate]="reportDate()"
+              [isReadOnly]="isReadOnly()"
+              (saved)="fetchReadiness()"
+              (editingChange)="onReadinessEditingChange($event)"
+            />
+          </section>
+        } @else {
+          <div class="drilldown">
+            <button type="button" class="back-link" (click)="onBackToOverview()">← חזרה לסקירה כללית</button>
+            <h2 class="team-title">{{ drilledTeam()?.name }}</h2>
+
+            <app-summary-bar
+              [missions]="drilledMissions()"
+              [totalTrucks]="drilledTotal()?.trucks ?? 0"
+              [totalPeople]="drilledTotal()?.people ?? 0"
+            />
+
+            <app-mission-list
+              [missions]="drilledMissions()"
+              [expandedMissionId]="expandedMissionId()"
+              (toggleExpand)="onToggleExpand($event)"
+              (startMission)="onStartMission($event)"
+              (completeMission)="onCompleteMission($event)"
+              (cancelMission)="onCancelMission($event)"
+            />
+          </div>
+        }
+      </div>
+    }
+  }
+
+  @if (showConfetti()) { <app-confetti /> }
+  @if (completionMission(); as m) {
+    <app-completion-modal [mission]="m" (closeModal)="closeCompletionModal()" />
+  }
+</ion-content>

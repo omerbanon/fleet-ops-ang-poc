@@ -1,0 +1,66 @@
+<section class="commander-summary">
+  <div class="global-row">
+    <article class="stat-card">
+      <div class="stat-label">משימות פעילות</div>
+      <div class="stat-value">
+        {{ activeCount() }}
+        @if (activeCount() > 0) { <span class="pulse-dot"></span> }
+      </div>
+    </article>
+    <article class="stat-card">
+      <div class="stat-label">הושלמו היום</div>
+      <div class="stat-value">
+        {{ completedToday() }}
+        @if (completedToday() > 0) { <span class="check">✓</span> }
+      </div>
+    </article>
+    <article class="stat-card">
+      <div class="stat-label">מתוזמנות השבוע</div>
+      <div class="stat-value">{{ scheduledThisWeek() }}</div>
+    </article>
+    <article class="stat-card">
+      <div class="stat-label">משאיות בשטח</div>
+      <div class="stat-value">{{ deployedTrucks() }} / {{ totalTrucks() }}</div>
+    </article>
+    <article class="stat-card">
+      <div class="stat-label">כוח אדם בשטח</div>
+      <div class="stat-value">{{ deployedCrew() }} / {{ totalPeople() }}</div>
+    </article>
+  </div>
+
+  <div class="teams-grid">
+    @for (card of teamCards(); track card.team_id) {
+      <button type="button" class="team-card" (click)="onTeamClick(card.team_id)">
+        <h3 class="team-name">{{ card.team_name }}</h3>
+        <div class="mini-grid">
+          <div class="mini">
+            <div class="mini-label">פעילות</div>
+            <div class="mini-value">
+              {{ card.active }}
+              @if (card.active > 0) { <span class="pulse-dot small"></span> }
+            </div>
+          </div>
+          <div class="mini">
+            <div class="mini-label">הושלמו היום</div>
+            <div class="mini-value">{{ card.completedToday }}</div>
+          </div>
+          <div class="mini">
+            <div class="mini-label">מתוזמנות</div>
+            <div class="mini-value">{{ card.scheduled }}</div>
+          </div>
+          <div class="mini">
+            <div class="mini-label">משאיות</div>
+            <div class="mini-value">{{ card.trucks }} / {{ card.totalTrucks }}</div>
+          </div>
+          <div class="mini">
+            <div class="mini-label">כוח אדם</div>
+            <div class="mini-value">{{ card.people }} / {{ card.totalPeople }}</div>
+          </div>
+        </div>
+        <div class="util-bar">
+          <div class="util-fill" [style.width.%]="card.utilization"></div>
+        </div>
+      </button>
+    }
+  </div>
+</section>

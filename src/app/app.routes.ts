@@ -27,6 +27,12 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
+    path: 'commander',
+    loadComponent: () =>
+      import('./pages/commander/commander.page').then(m => m.CommanderPage),
+    canActivate: [authGuard],
+  },
+  {
     path: '**',
     redirectTo: '',
   },
