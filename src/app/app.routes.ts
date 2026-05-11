@@ -27,6 +27,12 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
+    path: 'admin/reports',
+    loadComponent: () =>
+      import('./pages/admin-reports/admin-reports.page').then(m => m.AdminReportsPage),
+    canActivate: [authGuard],
+  },
+  {
     path: '**',
     redirectTo: '',
   },

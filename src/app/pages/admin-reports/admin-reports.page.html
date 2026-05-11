@@ -1,0 +1,104 @@
+<ion-content class="reports-content">
+  <div class="page">
+    <header class="header-row">
+      <h1>דו"חות</h1>
+      @if (hasTeams()) {
+        <button type="button" class="export-btn" (click)="exportCsv()">
+          <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V3" />
+          </svg>
+          ייצוא לאקסל
+        </button>
+      }
+    </header>
+
+    <div class="filter-row">
+      @for (p of presetOrder; track p) {
+        <button
+          type="button"
+          class="preset-btn"
+          [class.active]="preset() === p"
+          (click)="onPreset(p)"
+        >{{ presetLabels[p] }}</button>
+      }
+
+      @if (showCustomDates()) {
+        <div class="custom-range">
+          <span class="lbl">מ:</span>
+          <input type="date" [value]="customFrom()" (change)="onCustomFrom($any($event.target).value)" />
+          <span class="lbl">עד:</span>
+          <input type="date" [value]="customTo()" (change)="onCustomTo($any($event.target).value)" />
+        </div>
+      }
+    </div>
+
+    @if (fetching()) {
+      <div class="state-screen"><ion-spinner name="crescent" /></div>
+    } @else if (errorMessage()) {
+      <div class="state-screen">
+        <p class="error">{{ errorMessage() }}</p>
+        <button type="button" class="retry-btn" (click)="retry()">נסה שוב</button>
+      </div>
+    } @else {
+      <div class="stat-cards">
+        <article class="stat-card">
+          <div class="stat-label">פעילות</div>
+          <div class="stat-value">{{ totals().active_missions }}</div>
+        </article>
+        <article class="stat-card">
+          <div class="stat-label">מתוזמנות</div>
+          <div class="stat-value">{{ totals().scheduled_missions }}</div>
+        </article>
+        <article class="stat-card">
+          <div class="stat-label">הושלמו</div>
+          <div class="stat-value">{{ totals().completed_missions }}</div>
+        </article>
+        <article class="stat-card">
+          <div class="stat-label">משאיות</div>
+          <div class="stat-value">{{ totals().unique_trucks }}</div>
+        </article>
+        <article class="stat-card">
+          <div class="stat-label">אנשי כוח</div>
+          <div class="stat-value">{{ totals().unique_people }}</div>
+        </article>
+      </div>
+
+      <div class="table-card">
+        <table>
+          <thead>
+            <tr>
+              <th class="th-name">צוות</th>
+              <th>פעילות</th>
+              <th>מתוזמנות</th>
+              <th>הושלמו</th>
+              <th>משאיות</th>
+              <th>אנשי כוח</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (team of teams(); track team.team_id) {
+              <tr>
+                <td class="td-name">
+                  <button type="button" class="team-link" (click)="goToTeam(team.team_id)">
+                    {{ team.team_name }}
+                    <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                  </button>
+                </td>
+                <td>{{ team.active_missions }}</td>
+                <td>{{ team.scheduled_missions }}</td>
+                <td>{{ team.completed_missions }}</td>
+                <td>{{ team.unique_trucks }}</td>
+                <td>{{ team.unique_people }}</td>
+              </tr>
+            }
+            @if (!hasTeams()) {
+              <tr><td colspan="6" class="empty">אין נתונים להצגה</td></tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </div>
+</ion-content>
