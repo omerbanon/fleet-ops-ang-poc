@@ -1,0 +1,222 @@
+@use '../../../styles/variables' as *;
+
+.reports-content {
+  --background: #FAF8F5;
+}
+
+.page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: $space-6 $space-4;
+}
+
+.header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $space-6;
+
+  h1 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: $gray-900;
+    margin: 0;
+  }
+}
+
+.export-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  padding: 8px 16px;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background: white;
+  color: $gray-700;
+  border: 1px solid $gray-200;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+
+  &:hover {
+    border-color: rgba(45, 95, 63, 0.3);
+    color: $primary;
+  }
+}
+
+.filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: $space-2;
+  margin-bottom: $space-6;
+}
+
+.preset-btn {
+  padding: 8px 16px;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background: white;
+  color: $gray-700;
+  border: 1px solid $gray-200;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+
+  &:hover { border-color: rgba(45, 95, 63, 0.3); }
+  &.active {
+    background: $primary;
+    color: white;
+    border-color: $primary;
+  }
+}
+
+.custom-range {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+
+  .lbl { font-size: 0.75rem; font-weight: 500; color: $gray-500; }
+
+  input[type="date"] {
+    padding: 8px 12px;
+    border: 1px solid $gray-200;
+    border-radius: 12px;
+    font-size: 0.875rem;
+    background: white;
+    cursor: pointer;
+    font-family: inherit;
+  }
+}
+
+.state-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: $space-3;
+  padding: $space-8 0;
+
+  ion-spinner { width: 36px; height: 36px; }
+  .error { color: $danger; }
+}
+
+.retry-btn {
+  padding: 8px 16px;
+  background: $primary;
+  color: white;
+  border: 0;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+
+  &:hover { opacity: 0.9; }
+}
+
+.stat-cards {
+  display: flex;
+  gap: $space-4;
+  overflow-x: auto;
+  padding-bottom: $space-2;
+  margin-bottom: $space-8;
+}
+
+.stat-card {
+  min-width: 120px;
+  flex: 1;
+  background: white;
+  border: 1px solid $card-border;
+  border-radius: 16px;
+  box-shadow: $card-shadow;
+  padding: $space-4;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: $gray-500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: $space-1;
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: $gray-900;
+}
+
+.table-card {
+  background: white;
+  border: 1px solid $card-border;
+  border-radius: 16px;
+  box-shadow: $card-shadow;
+  overflow: hidden;
+}
+
+table {
+  width: 100%;
+  font-size: 0.875rem;
+  border-collapse: collapse;
+
+  thead {
+    background: rgba($gray-50, 0.5);
+    border-bottom: 1px solid $gray-100;
+
+    th {
+      padding: $space-3 $space-4;
+      font-weight: 500;
+      color: $gray-600;
+      text-align: center;
+    }
+
+    .th-name { text-align: start; }
+  }
+
+  tbody tr {
+    border-bottom: 1px solid #F9FAFB;
+
+    &:last-child { border-bottom: 0; }
+    &:hover { background: rgba($gray-50, 0.5); }
+
+    td {
+      padding: $space-3 $space-4;
+      color: $gray-700;
+      text-align: center;
+    }
+
+    .td-name {
+      text-align: start;
+      font-weight: 500;
+      color: $gray-900;
+    }
+  }
+}
+
+.team-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  color: $gray-900;
+  font-weight: 500;
+  font-size: 0.875rem;
+  padding: 0;
+  transition: color 0.15s;
+
+  svg { color: $gray-300; transition: color 0.15s; }
+
+  &:hover {
+    color: $primary;
+    svg { color: $primary; }
+  }
+}
+
+.empty {
+  padding: $space-8 !important;
+  text-align: center !important;
+  color: $gray-400;
+}
