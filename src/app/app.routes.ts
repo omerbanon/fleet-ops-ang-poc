@@ -27,6 +27,12 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
+    path: 'safety-exam',
+    loadComponent: () =>
+      import('./pages/safety-exam/safety-exam.page').then(m => m.SafetyExamPage),
+    // No authGuard — public route
+  },
+  {
     path: '**',
     redirectTo: '',
   },
