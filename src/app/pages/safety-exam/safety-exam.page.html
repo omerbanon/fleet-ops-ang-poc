@@ -1,0 +1,108 @@
+<ion-content class="exam-content">
+  @if (submitted()) {
+    <div class="success-wrapper">
+      <div class="success-card">
+        <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <h2>הבוחן נשלח בהצלחה!</h2>
+        <p>תודה, {{ fullName() }}. התשובות שלך נשמרו במערכת.</p>
+      </div>
+    </div>
+  } @else {
+    <form class="exam-form" (submit)="$event.preventDefault(); onSubmit()">
+      <header class="exam-header">
+        <h1>בוחן בטיחות בנשק</h1>
+        <p>מק פורק + נשק אישי</p>
+      </header>
+
+      <section class="details-card">
+        <h2>פרטים אישיים</h2>
+        <div class="grid-2">
+          <div class="field">
+            <label>שם מלא *</label>
+            <input
+              type="text"
+              required
+              [value]="fullName()"
+              (input)="fullName.set($any($event.target).value)"
+              placeholder="שם פרטי + משפחה"
+            />
+          </div>
+          <div class="field">
+            <label>אימייל *</label>
+            <input
+              type="email"
+              required
+              dir="ltr"
+              [value]="email()"
+              (input)="email.set($any($event.target).value)"
+              placeholder="example@email.com"
+            />
+          </div>
+          <div class="field">
+            <label>מספר אישי (מ.א.)</label>
+            <input
+              type="text"
+              [value]="militaryId()"
+              (input)="militaryId.set($any($event.target).value)"
+              placeholder="מספר אישי"
+            />
+          </div>
+          <div class="field">
+            <label>דרגה</label>
+            <input
+              type="text"
+              [value]="rank()"
+              (input)="rank.set($any($event.target).value)"
+              placeholder="דרגה"
+            />
+          </div>
+        </div>
+      </section>
+
+      @for (section of sections; track section.id) {
+        <div class="section-block">
+          <div class="section-header">
+            <h2>{{ section.title }}</h2>
+          </div>
+          @for (q of section.questions; track q.id; let i = $index) {
+            <article class="question-card">
+              <p class="question-text">
+                <span class="q-num">{{ i + 1 }}.</span>
+                {{ q.text }}
+              </p>
+              <div class="options">
+                @for (opt of q.options; track opt.key) {
+                  <label class="option" [class.selected]="isSelected(q.id, opt.key)">
+                    <input
+                      type="radio"
+                      [name]="q.id"
+                      [value]="opt.key"
+                      [checked]="isSelected(q.id, opt.key)"
+                      (change)="setAnswer(q.id, opt.key)"
+                    />
+                    <span>
+                      <span class="opt-key">{{ opt.key }}.</span>
+                      {{ opt.text }}
+                    </span>
+                  </label>
+                }
+              </div>
+            </article>
+          }
+        </div>
+      }
+
+      <div class="progress">ענית על {{ answeredCount() }} מתוך {{ totalQuestions() }} שאלות</div>
+
+      @if (errorMessage()) {
+        <div class="error-banner">{{ errorMessage() }}</div>
+      }
+
+      <button type="submit" class="submit-btn" [disabled]="submitting()">
+        {{ submitting() ? 'שולח...' : 'שלח בוחן' }}
+      </button>
+    </form>
+  }
+</ion-content>
